@@ -7,6 +7,7 @@ Lingo is a full-stack clone of the Duolingo web app. A learner follows a Spanish
 [Try Lingo →](https://duolingo-scalerlabs.vercel.app/)
 
 Frontend: https://duolingo-scalerlabs.vercel.app
+
 Backend API: https://duolingo-scalerlabs.onrender.com
 
 ## Tech stack
