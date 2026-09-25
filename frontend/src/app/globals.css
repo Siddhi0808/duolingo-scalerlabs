@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens for the Lingo design system (original, Duolingo-inspired).
+ * Tailwind v4 reads tokens from @theme, so `bg-brand`, `text-ink`, `rounded-card`
+ * etc. become utilities. Every later component uses these names, never raw hex.
+ */
+@theme {
+  --font-sans: "Nunito Variable", ui-rounded, system-ui, sans-serif;
+
+  /* Brand + feedback */
+  --color-brand: #58cc02;
+  --color-brand-shadow: #46a302;
+  --color-brand-light: #d7ffb8;
+  --color-sky: #1cb0f6;
+  --color-sky-shadow: #1899d6;
+  --color-sky-light: #ddf4ff;
+  --color-danger: #ff4b4b;
+  --color-danger-shadow: #ea2b2b;
+  --color-danger-light: #ffdfe0;
+  --color-gold: #ffc800;
+  --color-gold-shadow: #e5a500;
+  --color-flame: #ff9600;
+  --color-gem: #1cb0f6;
+  --color-heart: #ff4b4b;
+  --color-purple: #ce82ff;
+
+  /* Neutrals */
+  --color-ink: #3c3c3c;
+  --color-ink-soft: #777777;
+  --color-line: #e5e5e5;
+  --color-locked: #e5e5e5;
+  --color-locked-ink: #afafaf;
+  --color-surface: #ffffff;
+  --color-canvas: #f7f7f7;
+
+  --radius-card: 1rem;
+  --radius-button: 1rem;
+}
+
+html,
+body {
+  background: var(--color-surface);
+  color: var(--color-ink);
+}
+
+body {
+  font-family: var(--font-sans);
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+
+.animate-shake {
+  animation: shake 0.4s ease-in-out;
+}
+
+@keyframes pop {
+  0% { transform: scale(0.9); opacity: 0; }
+  70% { transform: scale(1.05); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.animate-pop {
+  animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes slideUp {
+  0% { transform: translateY(100%); }
+  100% { transform: translateY(0); }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}

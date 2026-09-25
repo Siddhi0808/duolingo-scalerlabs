@@ -1,0 +1,53 @@
+{
+  "_comment": "Days are offsets from the seed's reference day (0 = today in each user's timezone; -1 = yesterday). Times are local wall-clock times. Stored counters (streak, hearts, gems) are seeded as plain state; xp_total is always the sum of the user's XP events. Learner XP follows the M5 rule: 10 XP per first lesson completion (and 10 for the practice session).",
+  "learner": {
+    "username": "learner",
+    "display_name": "Alex",
+    "avatar_color": "#1CB0F6",
+    "timezone": "Asia/Kolkata",
+    "joined": {"day": -7, "time": "18:30"},
+    "daily_goal_xp": 20,
+    "hearts": 5,
+    "hearts_updated": {"day": -1, "time": "21:14"},
+    "gems": 600,
+    "streak_count": 6,
+    "longest_streak": 6,
+    "last_streak_day": -1,
+    "activity": [
+      {"day": -6, "time": "19:05", "lesson": "greetings/1", "mistakes": 0, "xp": 10},
+      {"day": -6, "time": "19:15", "lesson": "greetings/2", "mistakes": 1, "xp": 10},
+      {"day": -5, "time": "20:40", "lesson": "greetings/3", "mistakes": 0, "xp": 10},
+      {"day": -4, "time": "08:10", "lesson": "introductions/1", "mistakes": 2, "xp": 10},
+      {"day": -3, "time": "19:30", "lesson": "introductions/2", "mistakes": 0, "xp": 10},
+      {"day": -3, "time": "19:42", "practice": "greetings", "mistakes": 0, "xp": 10},
+      {"day": -2, "time": "21:00", "lesson": "introductions/3", "mistakes": 1, "xp": 10},
+      {"day": -1, "time": "21:05", "lesson": "basic_words/1", "mistakes": 0, "xp": 10}
+    ],
+    "achievements": [
+      {"code": "scholar_1", "day": -6, "time": "19:09"},
+      {"code": "conqueror_1", "day": -5, "time": "20:44"},
+      {"code": "wildfire_1", "day": -4, "time": "08:14"},
+      {"code": "scholar_2", "day": -3, "time": "19:34"}
+    ]
+  },
+  "bots": [
+    {"username": "maria.garcia", "display_name": "María G.", "avatar_color": "#FF4B4B", "timezone": "Europe/Madrid", "streak_count": 13, "longest_streak": 30, "last_streak_day": -1,
+     "daily_xp": [[-13, 20], [-12, 25], [-11, 30], [-10, 20], [-9, 35], [-8, 25], [-7, 30], [-6, 60], [-5, 45], [-4, 80], [-3, 55], [-2, 40], [-1, 60]]},
+    {"username": "kenji_learns", "display_name": "Kenji", "avatar_color": "#CE82FF", "timezone": "Asia/Tokyo", "streak_count": 6, "longest_streak": 12, "last_streak_day": -1,
+     "daily_xp": [[-10, 100], [-6, 30], [-5, 50], [-4, 40], [-3, 60], [-2, 45], [-1, 35]]},
+    {"username": "priya.sharma", "display_name": "Priya S.", "avatar_color": "#FF9600", "timezone": "Asia/Kolkata", "streak_count": 8, "longest_streak": 15, "last_streak_day": -1,
+     "daily_xp": [[-12, 40], [-8, 20], [-7, 20], [-6, 25], [-5, 40], [-4, 30], [-3, 35], [-2, 30], [-1, 30]]},
+    {"username": "lucas.m", "display_name": "Lucas M.", "avatar_color": "#58CC02", "timezone": "America/Sao_Paulo", "streak_count": 6, "longest_streak": 9, "last_streak_day": -1,
+     "daily_xp": [[-9, 60], [-6, 20], [-5, 30], [-4, 25], [-3, 35], [-2, 20], [-1, 20]]},
+    {"username": "amara_o", "display_name": "Amara O.", "avatar_color": "#1CB0F6", "timezone": "Africa/Lagos", "streak_count": 5, "longest_streak": 6, "last_streak_day": -1,
+     "daily_xp": [[-5, 35], [-4, 20], [-3, 25], [-2, 25], [-1, 15]]},
+    {"username": "tomas.novak", "display_name": "Tomáš N.", "avatar_color": "#FFC800", "timezone": "Europe/Prague", "streak_count": 1, "longest_streak": 8, "last_streak_day": -1,
+     "daily_xp": [[-12, 70], [-6, 20], [-4, 25], [-3, 15], [-1, 30]]},
+    {"username": "sofia.r", "display_name": "Sofía R.", "avatar_color": "#FF86D0", "timezone": "America/Mexico_City", "streak_count": 2, "longest_streak": 10, "last_streak_day": -2,
+     "daily_xp": [[-11, 55], [-6, 15], [-5, 15], [-3, 20], [-2, 25]]},
+    {"username": "diego_v", "display_name": "Diego V.", "avatar_color": "#2B70C9", "timezone": "America/Bogota", "streak_count": 2, "longest_streak": 4, "last_streak_day": -2,
+     "daily_xp": [[-8, 45], [-5, 10], [-3, 20], [-2, 10]]},
+    {"username": "hana.k", "display_name": "Hana K.", "avatar_color": "#8549BA", "timezone": "Asia/Seoul", "streak_count": 1, "longest_streak": 5, "last_streak_day": -1,
+     "daily_xp": [[-4, 10], [-1, 10]]}
+  ]
+}

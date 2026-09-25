@@ -1,0 +1,331 @@
+{
+  "slug": "es-from-en",
+  "title": "Spanish",
+  "learning_language": "es",
+  "from_language": "en",
+  "units": [
+    {
+      "key": "basics",
+      "title": "Basics",
+      "description": "Greet people, introduce yourself and learn your first words.",
+      "color": "#58CC02",
+      "skills": [
+        {
+          "key": "greetings",
+          "title": "Greetings",
+          "icon": "wave",
+          "description": "Say hello, goodbye and ask how someone is.",
+          "lessons": [
+            {
+              "title": "Hello and goodbye",
+              "exercises": [
+                {"type": "multiple_choice", "prompt": "Which one means “hello”?", "options": ["adiós", "hola", "gracias"], "answer": "hola"},
+                {"type": "matching_pairs", "pairs": [["hello", "hola"], ["goodbye", "adiós"], ["thank you", "gracias"], ["please", "por favor"]]},
+                {"type": "fill_blank", "sentence": "___, ¿cómo estás?", "options": ["Hola", "Adiós", "Gracias"], "answer": "Hola", "hint": "Hello, how are you?"},
+                {"type": "word_bank", "source": "Good morning", "answer": "Buenos días", "distractors": ["noches", "tardes", "Buenas"]},
+                {"type": "type_answer", "source": "Hello", "answer": "Hola"}
+              ]
+            },
+            {
+              "title": "Morning and night",
+              "exercises": [
+                {"type": "multiple_choice", "prompt": "Which one means “good night”?", "options": ["buenos días", "buenas tardes", "buenas noches"], "answer": "buenas noches"},
+                {"type": "word_bank", "source": "Good afternoon", "answer": "Buenas tardes", "distractors": ["días", "noches", "Buenos"]},
+                {"type": "fill_blank", "sentence": "Buenas ___, hasta mañana.", "options": ["noches", "días", "gracias"], "answer": "noches", "hint": "Good night, see you tomorrow."},
+                {"type": "type_answer", "source": "Good morning", "answer": "Buenos días", "also": ["Buen día"]},
+                {"type": "multiple_choice", "prompt": "What does “hasta luego” mean?", "options": ["good morning", "see you later", "thank you"], "answer": "see you later"}
+              ]
+            },
+            {
+              "title": "How are you?",
+              "exercises": [
+                {"type": "word_bank", "source": "How are you?", "answer": "¿Cómo estás?", "distractors": ["Qué", "eres", "bien"]},
+                {"type": "multiple_choice", "prompt": "How do you say “I'm fine, thanks”?", "options": ["Estoy mal, gracias", "Estoy bien, gracias", "Soy bien, gracias"], "answer": "Estoy bien, gracias"},
+                {"type": "fill_blank", "sentence": "Estoy ___, gracias. ¿Y tú?", "options": ["bien", "hola", "noches"], "answer": "bien", "hint": "I'm fine, thanks. And you?"},
+                {"type": "matching_pairs", "pairs": [["good", "bien"], ["bad", "mal"], ["so-so", "más o menos"], ["and you?", "¿y tú?"]]},
+                {"type": "type_answer", "source": "Thank you", "answer": "Gracias"},
+                {"type": "word_bank", "to": "en", "source": "Estoy muy bien", "answer": "I am very well", "also": ["I am very good"], "distractors": ["you", "are"]}
+              ]
+            }
+          ]
+        },
+        {
+          "key": "introductions",
+          "title": "Introductions",
+          "icon": "id",
+          "description": "Say your name, what you do and where you are from.",
+          "lessons": [
+            {
+              "title": "My name is…",
+              "exercises": [
+                {"type": "multiple_choice", "prompt": "How do you say “My name is Ana”?", "options": ["Me llamo Ana", "Te llamas Ana", "Se llama Ana"], "answer": "Me llamo Ana"},
+                {"type": "word_bank", "source": "My name is Carlos", "answer": "Me llamo Carlos", "also": ["Mi nombre es Carlos"], "distractors": ["Te"]},
+                {"type": "fill_blank", "sentence": "¿Cómo te ___?", "options": ["llamas", "llamo", "llama"], "answer": "llamas", "hint": "What's your name?", "explanation": "With “te” (you), the verb ends in -as: te llamas."},
+                {"type": "type_answer", "source": "What is your name?", "answer": "¿Cómo te llamas?", "also": ["¿Cuál es tu nombre?"]},
+                {"type": "matching_pairs", "pairs": [["my name is", "me llamo"], ["your name is", "te llamas"], ["his name is", "se llama"], ["nice to meet you", "mucho gusto"]]}
+              ]
+            },
+            {
+              "title": "I am…",
+              "exercises": [
+                {"type": "multiple_choice", "prompt": "Which one means “I am a student”?", "options": ["Eres estudiante", "Es estudiante", "Soy estudiante"], "answer": "Soy estudiante"},
+                {"type": "fill_blank", "sentence": "Yo ___ profesora.", "options": ["soy", "eres", "es"], "answer": "soy", "hint": "I am a teacher."},
+                {"type": "word_bank", "source": "You are my friend", "answer": "Tú eres mi amigo", "also": ["Eres mi amigo"], "distractors": ["soy", "su"]},
+                {"type": "type_answer", "source": "I am Ana", "answer": "Soy Ana", "also": ["Yo soy Ana"]},
+                {"type": "multiple_choice", "prompt": "What does “mucho gusto” mean?", "options": ["very good", "nice to meet you", "see you tomorrow"], "answer": "nice to meet you"}
+              ]
+            },
+            {
+              "title": "Where are you from?",
+              "exercises": [
+                {"type": "matching_pairs", "pairs": [["Spain", "España"], ["Mexico", "México"], ["Germany", "Alemania"], ["England", "Inglaterra"]]},
+                {"type": "fill_blank", "sentence": "Soy ___ México.", "options": ["de", "en", "con"], "answer": "de", "hint": "I am from Mexico.", "explanation": "Use “ser de” to say where someone is from."},
+                {"type": "word_bank", "source": "Where are you from?", "answer": "¿De dónde eres?", "distractors": ["estás", "Cómo"]},
+                {"type": "multiple_choice", "prompt": "How do you say “I live in Madrid”?", "options": ["Soy en Madrid", "Voy a Madrid", "Vivo en Madrid"], "answer": "Vivo en Madrid"},
+                {"type": "type_answer", "source": "I am from Spain", "answer": "Soy de España", "also": ["Yo soy de España"]},
+                {"type": "word_bank", "to": "en", "source": "Ella es de Colombia", "answer": "She is from Colombia", "distractors": ["He", "in"]}
+              ]
+            }
+          ]
+        },
+        {
+          "key": "basic_words",
+          "title": "Basic Words",
+          "icon": "book",
+          "description": "People, animals and everyday things.",
+          "lessons": [
+            {
+              "title": "People",
+              "exercises": [
+                {"type": "multiple_choice", "prompt": "Which one is “the woman”?", "options": ["el hombre", "la mujer", "el niño", "la niña"], "answer": "la mujer", "images": {"el hombre": "👨", "la mujer": "👩", "el niño": "👦", "la niña": "👧"}},
+                {"type": "matching_pairs", "pairs": [["the man", "el hombre"], ["the boy", "el niño"], ["the girl", "la niña"], ["the friend", "el amigo"]]},
+                {"type": "fill_blank", "sentence": "___ niña come pan.", "options": ["La", "El", "Los"], "answer": "La", "hint": "The girl eats bread.", "explanation": "“Niña” is feminine and singular, so it takes “la”."},
+                {"type": "word_bank", "source": "The man and the woman", "answer": "El hombre y la mujer", "distractors": ["niño", "o"]},
+                {"type": "type_answer", "source": "the boy", "answer": "el niño"}
+              ]
+            },
+            {
+              "title": "Animals and things",
+              "exercises": [
+                {"type": "multiple_choice", "prompt": "Which one is “the cat”?", "options": ["el perro", "el gato", "el libro"], "answer": "el gato", "images": {"el perro": "🐶", "el gato": "🐱", "el libro": "📕"}},
+                {"type": "fill_blank", "sentence": "Tengo un ___ negro.", "options": ["perro", "casa", "mujer"], "answer": "perro", "hint": "I have a black dog."},
+                {"type": "matching_pairs", "pairs": [["dog", "perro"], ["cat", "gato"], ["house", "casa"], ["car", "coche"], ["book", "libro"]]},
+                {"type": "multiple_choice", "prompt": "Which one is “the book”?", "options": ["el libro", "la casa", "el coche"], "answer": "el libro", "images": {"el libro": "📕", "la casa": "🏠", "el coche": "🚗"}},
+                {"type": "word_bank", "source": "The cat is small", "answer": "El gato es pequeño", "distractors": ["grande", "perro"]},
+                {"type": "type_answer", "source": "the house", "answer": "la casa"}
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "food_and_drink",
+      "title": "Food and Drink",
+      "description": "Talk about food, order at a café and say what you like.",
+      "color": "#CE82FF",
+      "skills": [
+        {
+          "key": "food_drinks",
+          "title": "Food and Drinks",
+          "icon": "apple",
+          "description": "Everyday foods, drinks and meals.",
+          "lessons": [
+            {
+              "title": "First foods",
+              "exercises": [
+                {"type": "multiple_choice", "prompt": "Which one is “the apple”?", "options": ["el pan", "el queso", "la manzana"], "answer": "la manzana", "images": {"la manzana": "🍎", "el pan": "🍞", "el queso": "🧀"}},
+                {"type": "matching_pairs", "pairs": [["water", "agua"], ["milk", "leche"], ["bread", "pan"], ["cheese", "queso"]]},
+                {"type": "fill_blank", "sentence": "Yo bebo ___.", "options": ["agua", "pan", "manzana"], "answer": "agua", "hint": "I drink water."},
+                {"type": "word_bank", "source": "I eat bread", "answer": "Yo como pan", "also": ["Como pan"], "distractors": ["bebo", "agua"]},
+                {"type": "type_answer", "source": "the milk", "answer": "la leche"}
+              ]
+            },
+            {
+              "title": "Meals",
+              "exercises": [
+                {"type": "multiple_choice", "prompt": "What does “el desayuno” mean?", "options": ["dinner", "breakfast", "lunch"], "answer": "breakfast"},
+                {"type": "word_bank", "source": "We eat rice and chicken", "answer": "Comemos arroz y pollo", "also": ["Nosotros comemos arroz y pollo"], "distractors": ["pescado", "bebemos"]},
+                {"type": "fill_blank", "sentence": "El ___ tiene queso.", "options": ["sándwich", "agua", "café"], "answer": "sándwich", "hint": "The sandwich has cheese."},
+                {"type": "matching_pairs", "pairs": [["breakfast", "el desayuno"], ["lunch", "el almuerzo"], ["dinner", "la cena"], ["chicken", "el pollo"]]},
+                {"type": "type_answer", "source": "the rice", "answer": "el arroz"}
+              ]
+            },
+            {
+              "title": "Fruit and vegetables",
+              "exercises": [
+                {"type": "multiple_choice", "prompt": "Which one is “the orange”?", "options": ["el plátano", "la naranja", "la fresa"], "answer": "la naranja", "images": {"el plátano": "🍌", "la naranja": "🍊", "la fresa": "🍓"}},
+                {"type": "fill_blank", "sentence": "Las fresas son ___.", "options": ["rojas", "azules", "altas"], "answer": "rojas", "hint": "The strawberries are red."},
+                {"type": "type_answer", "source": "The apple is green", "answer": "La manzana es verde"},
+                {"type": "word_bank", "to": "en", "source": "El plátano es amarillo", "answer": "The banana is yellow", "distractors": ["orange", "green"]},
+                {"type": "matching_pairs", "pairs": [["banana", "el plátano"], ["strawberry", "la fresa"], ["tomato", "el tomate"], ["potato", "la papa"]]}
+              ]
+            }
+          ]
+        },
+        {
+          "key": "ordering_food",
+          "title": "Ordering Food",
+          "icon": "cup",
+          "description": "Order at a café and ask for the bill.",
+          "lessons": [
+            {
+              "title": "At the café",
+              "exercises": [
+                {"type": "multiple_choice", "prompt": "How do you say “A coffee, please”?", "options": ["Una leche, por favor", "Un café, por favor", "Un café, gracias"], "answer": "Un café, por favor"},
+                {"type": "fill_blank", "sentence": "Quiero ___ té con leche.", "options": ["un", "una", "unos"], "answer": "un", "hint": "I want a tea with milk.", "explanation": "“Té” is masculine and singular, so it takes “un”."},
+                {"type": "word_bank", "source": "I want a coffee, please", "answer": "Quiero un café, por favor", "also": ["Un café, por favor"], "distractors": ["una", "té"]},
+                {"type": "matching_pairs", "pairs": [["the coffee", "el café"], ["the tea", "el té"], ["the juice", "el jugo"], ["the sugar", "el azúcar"]]},
+                {"type": "type_answer", "source": "please", "answer": "por favor"},
+                {"type": "multiple_choice", "prompt": "What does “la cuenta” mean?", "options": ["the menu", "the bill", "the table"], "answer": "the bill"}
+              ]
+            },
+            {
+              "title": "Ordering a meal",
+              "exercises": [
+                {"type": "word_bank", "source": "The menu, please", "answer": "El menú, por favor", "also": ["La carta, por favor"], "distractors": ["cuenta"]},
+                {"type": "fill_blank", "sentence": "¿Cuánto ___ la sopa?", "options": ["cuesta", "come", "bebe"], "answer": "cuesta", "hint": "How much is the soup?"},
+                {"type": "multiple_choice", "prompt": "Which one means “I would like the soup”?", "options": ["Quiero la cuenta", "Quisiera la sopa", "Tengo la sopa"], "answer": "Quisiera la sopa"},
+                {"type": "type_answer", "source": "The bill, please", "answer": "La cuenta, por favor"},
+                {"type": "matching_pairs", "pairs": [["the soup", "la sopa"], ["the salad", "la ensalada"], ["the table", "la mesa"], ["the waiter", "el camarero"]]}
+              ]
+            }
+          ]
+        },
+        {
+          "key": "preferences",
+          "title": "Preferences",
+          "icon": "heart",
+          "description": "Say what you like, love and prefer.",
+          "lessons": [
+            {
+              "title": "I like…",
+              "exercises": [
+                {"type": "multiple_choice", "prompt": "How do you say “I like chocolate”?", "options": ["Te gusta el chocolate", "Le gusta el chocolate", "Me gusta el chocolate"], "answer": "Me gusta el chocolate"},
+                {"type": "fill_blank", "sentence": "No me ___ el café.", "options": ["gusta", "gustan", "gusto"], "answer": "gusta", "hint": "I don't like coffee."},
+                {"type": "word_bank", "source": "Do you like pizza?", "answer": "¿Te gusta la pizza?", "distractors": ["Me", "el"]},
+                {"type": "type_answer", "source": "I like tea", "answer": "Me gusta el té"},
+                {"type": "matching_pairs", "pairs": [["I like", "me gusta"], ["you like", "te gusta"], ["I love", "me encanta"], ["I don't like", "no me gusta"]]}
+              ]
+            },
+            {
+              "title": "Favorites",
+              "exercises": [
+                {"type": "multiple_choice", "prompt": "What does “mi comida favorita” mean?", "options": ["my favorite drink", "my big meal", "my favorite food"], "answer": "my favorite food"},
+                {"type": "word_bank", "source": "I prefer juice", "answer": "Prefiero el jugo", "also": ["Yo prefiero el jugo"], "distractors": ["agua", "gusta"]},
+                {"type": "fill_blank", "sentence": "Me ___ las fresas.", "options": ["gustan", "gusta", "gusto"], "answer": "gustan", "hint": "I like strawberries.", "explanation": "Use “gustan” when the thing you like is plural."},
+                {"type": "type_answer", "to": "en", "source": "Me encanta el helado", "answer": "I love ice cream", "also": ["I love the ice cream"]},
+                {"type": "matching_pairs", "pairs": [["sweet", "dulce"], ["salty", "salado"], ["spicy", "picante"], ["delicious", "delicioso"]]},
+                {"type": "multiple_choice", "prompt": "Which one means “The soup is delicious”?", "options": ["La sopa es picante", "La sopa está deliciosa", "La sopa está fría"], "answer": "La sopa está deliciosa"}
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "everyday_life",
+      "title": "Everyday Life",
+      "description": "Talk about your family, your day and the time.",
+      "color": "#FF9600",
+      "skills": [
+        {
+          "key": "family",
+          "title": "Family",
+          "icon": "people",
+          "description": "Parents, siblings and grandparents.",
+          "lessons": [
+            {
+              "title": "My family",
+              "exercises": [
+                {"type": "multiple_choice", "prompt": "Which one is “the mother”?", "options": ["el padre", "la madre", "el hermano"], "answer": "la madre"},
+                {"type": "matching_pairs", "pairs": [["mother", "la madre"], ["father", "el padre"], ["brother", "el hermano"], ["sister", "la hermana"]]},
+                {"type": "fill_blank", "sentence": "Mi ___ se llama Luis.", "options": ["padre", "madre", "hermana"], "answer": "padre", "hint": "My father's name is Luis."},
+                {"type": "word_bank", "source": "This is my family", "answer": "Esta es mi familia", "distractors": ["Este", "tu"]},
+                {"type": "type_answer", "source": "my sister", "answer": "mi hermana"}
+              ]
+            },
+            {
+              "title": "Brothers and sisters",
+              "exercises": [
+                {"type": "word_bank", "source": "I have two brothers", "answer": "Tengo dos hermanos", "also": ["Yo tengo dos hermanos"], "distractors": ["tres", "hermanas"]},
+                {"type": "multiple_choice", "prompt": "What does “los abuelos” mean?", "options": ["the parents", "the grandparents", "the cousins"], "answer": "the grandparents"},
+                {"type": "fill_blank", "sentence": "Mis ___ son altos.", "options": ["hermanos", "hermana", "madre"], "answer": "hermanos", "hint": "My brothers are tall."},
+                {"type": "matching_pairs", "pairs": [["grandfather", "el abuelo"], ["grandmother", "la abuela"], ["cousin", "el primo"], ["uncle", "el tío"]]},
+                {"type": "type_answer", "to": "en", "source": "Tengo una hermana", "answer": "I have a sister", "also": ["I have one sister"]}
+              ]
+            },
+            {
+              "title": "Describing family",
+              "exercises": [
+                {"type": "multiple_choice", "prompt": "How do you say “My mother is tall”?", "options": ["Mi madre es alto", "Mi madre es alta", "Mi padre es alta"], "answer": "Mi madre es alta"},
+                {"type": "fill_blank", "sentence": "Mi abuelo es muy ___.", "options": ["simpático", "simpática", "simpáticos"], "answer": "simpático", "hint": "My grandfather is very nice.", "explanation": "Adjectives agree with the noun: abuelo → simpático."},
+                {"type": "word_bank", "source": "My brother is young", "answer": "Mi hermano es joven", "distractors": ["mayor", "hermana"]},
+                {"type": "matching_pairs", "pairs": [["tall", "alto"], ["short", "bajo"], ["young", "joven"], ["old", "viejo"]]},
+                {"type": "type_answer", "source": "My family is big", "answer": "Mi familia es grande"}
+              ]
+            }
+          ]
+        },
+        {
+          "key": "everyday_activities",
+          "title": "Everyday Activities",
+          "icon": "sun",
+          "description": "Work, study and life at home.",
+          "lessons": [
+            {
+              "title": "Daily verbs",
+              "exercises": [
+                {"type": "multiple_choice", "prompt": "What does “yo trabajo” mean?", "options": ["I study", "I work", "I read"], "answer": "I work"},
+                {"type": "matching_pairs", "pairs": [["to eat", "comer"], ["to drink", "beber"], ["to read", "leer"], ["to write", "escribir"], ["to sleep", "dormir"]]},
+                {"type": "fill_blank", "sentence": "Nosotros ___ en la biblioteca.", "options": ["estudiamos", "estudio", "estudian"], "answer": "estudiamos", "hint": "We study in the library."},
+                {"type": "word_bank", "source": "She reads a book", "answer": "Ella lee un libro", "distractors": ["escribe", "una"]},
+                {"type": "type_answer", "source": "I work", "answer": "Trabajo", "also": ["Yo trabajo"]}
+              ]
+            },
+            {
+              "title": "At home",
+              "exercises": [
+                {"type": "multiple_choice", "prompt": "Which one means “I cook dinner”?", "options": ["Como la cena", "Compro la cena", "Cocino la cena"], "answer": "Cocino la cena"},
+                {"type": "word_bank", "to": "en", "source": "Mi padre lava los platos", "answer": "My father washes the dishes", "distractors": ["mother", "cooks"]},
+                {"type": "fill_blank", "sentence": "Ellos ___ la televisión.", "options": ["ven", "ve", "veo"], "answer": "ven", "hint": "They watch television."},
+                {"type": "type_answer", "source": "I clean the house", "answer": "Limpio la casa", "also": ["Yo limpio la casa"]},
+                {"type": "matching_pairs", "pairs": [["the kitchen", "la cocina"], ["the bedroom", "el dormitorio"], ["the bathroom", "el baño"], ["the garden", "el jardín"]]},
+                {"type": "word_bank", "source": "We listen to music", "answer": "Escuchamos música", "also": ["Nosotros escuchamos música"], "distractors": ["bailamos", "la"]}
+              ]
+            }
+          ]
+        },
+        {
+          "key": "time_routine",
+          "title": "Time and Routine",
+          "icon": "clock",
+          "description": "Tell the time and describe your day.",
+          "lessons": [
+            {
+              "title": "What time is it?",
+              "exercises": [
+                {"type": "multiple_choice", "prompt": "How do you say “It's one o'clock”?", "options": ["Son las dos", "Es la una", "Es la tarde"], "answer": "Es la una", "explanation": "Only one o'clock uses “es la”; other hours use “son las”."},
+                {"type": "fill_blank", "sentence": "Son las ___ de la mañana.", "options": ["siete", "una", "mediodía"], "answer": "siete", "hint": "It's seven in the morning."},
+                {"type": "word_bank", "source": "What time is it?", "answer": "¿Qué hora es?", "distractors": ["Cuántos", "son"]},
+                {"type": "matching_pairs", "pairs": [["morning", "la mañana"], ["afternoon", "la tarde"], ["night", "la noche"], ["noon", "el mediodía"]]},
+                {"type": "type_answer", "source": "It's three o'clock", "answer": "Son las tres"}
+              ]
+            },
+            {
+              "title": "My routine",
+              "exercises": [
+                {"type": "multiple_choice", "prompt": "What does “me levanto temprano” mean?", "options": ["I go to bed late", "I eat early", "I get up early"], "answer": "I get up early"},
+                {"type": "fill_blank", "sentence": "Me ___ a las diez de la noche.", "options": ["acuesto", "acuestas", "acuestan"], "answer": "acuesto", "hint": "I go to bed at ten at night."},
+                {"type": "word_bank", "source": "I take a shower in the morning", "answer": "Me ducho por la mañana", "distractors": ["tarde", "te"]},
+                {"type": "type_answer", "source": "Every day", "answer": "Todos los días", "also": ["Cada día"]},
+                {"type": "matching_pairs", "pairs": [["Monday", "lunes"], ["Tuesday", "martes"], ["Friday", "viernes"], ["Sunday", "domingo"]]},
+                {"type": "multiple_choice", "prompt": "Which one means “on Saturday”?", "options": ["el domingo", "el sábado", "el lunes"], "answer": "el sábado"}
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

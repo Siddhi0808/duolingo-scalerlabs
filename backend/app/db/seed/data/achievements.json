@@ -1,0 +1,17 @@
+[
+  {"code": "wildfire_1", "title": "Wildfire", "description": "Reach a 3 day streak", "icon": "flame", "metric": "streak", "threshold": 3, "tier": 1, "gem_reward": 10},
+  {"code": "wildfire_2", "title": "Wildfire", "description": "Reach a 7 day streak", "icon": "flame", "metric": "streak", "threshold": 7, "tier": 2, "gem_reward": 25},
+  {"code": "wildfire_3", "title": "Wildfire", "description": "Reach a 14 day streak", "icon": "flame", "metric": "streak", "threshold": 14, "tier": 3, "gem_reward": 50},
+  {"code": "sage_1", "title": "Sage", "description": "Earn 100 XP", "icon": "star", "metric": "total_xp", "threshold": 100, "tier": 1, "gem_reward": 10},
+  {"code": "sage_2", "title": "Sage", "description": "Earn 250 XP", "icon": "star", "metric": "total_xp", "threshold": 250, "tier": 2, "gem_reward": 25},
+  {"code": "sage_3", "title": "Sage", "description": "Earn 500 XP", "icon": "star", "metric": "total_xp", "threshold": 500, "tier": 3, "gem_reward": 50},
+  {"code": "scholar_1", "title": "Scholar", "description": "Complete your first lesson", "icon": "book", "metric": "lessons_completed", "threshold": 1, "tier": 1, "gem_reward": 10},
+  {"code": "scholar_2", "title": "Scholar", "description": "Complete 5 lessons", "icon": "book", "metric": "lessons_completed", "threshold": 5, "tier": 2, "gem_reward": 25},
+  {"code": "scholar_3", "title": "Scholar", "description": "Complete every lesson in the course", "icon": "book", "metric": "lessons_completed", "threshold": 22, "tier": 3, "gem_reward": 50},
+  {"code": "sharpshooter_1", "title": "Sharpshooter", "description": "Finish 5 lessons without a mistake", "icon": "target", "metric": "perfect_lessons", "threshold": 5, "tier": 1, "gem_reward": 10},
+  {"code": "sharpshooter_2", "title": "Sharpshooter", "description": "Finish 10 lessons without a mistake", "icon": "target", "metric": "perfect_lessons", "threshold": 10, "tier": 2, "gem_reward": 25},
+  {"code": "sharpshooter_3", "title": "Sharpshooter", "description": "Finish 15 lessons without a mistake", "icon": "target", "metric": "perfect_lessons", "threshold": 15, "tier": 3, "gem_reward": 50},
+  {"code": "conqueror_1", "title": "Conqueror", "description": "Complete your first skill", "icon": "crown", "metric": "skills_completed", "threshold": 1, "tier": 1, "gem_reward": 10},
+  {"code": "conqueror_2", "title": "Conqueror", "description": "Complete 5 skills", "icon": "crown", "metric": "skills_completed", "threshold": 5, "tier": 2, "gem_reward": 25},
+  {"code": "conqueror_3", "title": "Conqueror", "description": "Complete every skill in the course", "icon": "crown", "metric": "skills_completed", "threshold": 9, "tier": 3, "gem_reward": 50}
+]
