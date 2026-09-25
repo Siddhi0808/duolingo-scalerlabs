@@ -30,7 +30,7 @@ class Settings(BaseSettings):
     heart_regen_minutes: int = Field(default=30, gt=0)
 
     # Comma-separated list of browser origins allowed to call the API.
-    cors_origins: str = "http://localhost:3000,http://127.0.0.1:3000,https://duolingo-scalerlabs-nfh6rhxo-siddhij1011-5621s-projects.vercel.app"
+    cors_origins: str = "http://localhost:3000,http://127.0.0.1:3000,https://duolingo-scalerlabs.vercel.app,https://duolingo-scalerlabs-nfh6rhxo-siddhij1011-5621s-projects.vercel.app"
     @property
     def cors_origin_list(self) -> list[str]:
         # Browsers send Origin without a trailing slash, so "https://x.app/" (as copied from
