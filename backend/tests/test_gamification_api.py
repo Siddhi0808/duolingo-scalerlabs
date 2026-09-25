@@ -1,4 +1,4 @@
-"""M5 over HTTP: /me, /leaderboard, the full reward flow, and transaction rollback.
+"""Gamification over HTTP: /me, /leaderboard, the full reward flow, and transaction rollback.
 
 The clock is frozen at 12:00 IST on the seed's reference day, so results do not depend
 on the date the tests run.
@@ -107,7 +107,7 @@ def snapshot(factory: sessionmaker[Session]) -> dict[str, Any]:
 def test_me_summary_for_the_seeded_learner(client: TestClient) -> None:
     body = client.get("/api/v1/me").json()
     me = MeResponse.model_validate(body)
-    assert (me.username, me.xp_total, me.gems) == ("learner", 80, 600)
+    assert (me.username, me.xp_total, me.gems) == ("learner", 80, 1500)
     assert me.today.isoformat() == "2026-09-25"
     assert (me.streak.current, me.streak.longest, me.streak.extended_today) == (6, 6, False)
     assert (me.hearts.current, me.hearts.max) == (3, 5)

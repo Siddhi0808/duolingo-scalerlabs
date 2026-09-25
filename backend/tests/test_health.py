@@ -33,3 +33,10 @@ def test_cors_rejects_unknown_origin():
 
 def test_unversioned_path_is_not_found():
     assert client.get("/health").status_code == 404
+
+
+def test_cors_origins_ignore_trailing_slashes_and_blanks():
+    from app.core.config import Settings
+
+    settings = Settings(cors_origins=" https://lingo.vercel.app/ ,, http://localhost:3000")
+    assert settings.cors_origin_list == ["https://lingo.vercel.app", "http://localhost:3000"]

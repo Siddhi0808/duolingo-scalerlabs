@@ -259,7 +259,7 @@ def test_final_exercise_completes_the_lesson(seeded: Session, learner: User) -> 
     assert session.ended_at is not None
     summary = {k: v for k, v in (session.result or {}).items() if k != "rewards"}
     assert summary == {"outcome": "completed", "total": 6, "correct": 6, "incorrect": 0}
-    assert session.xp_awarded == 10  # M5: first completion of the lesson
+    assert session.xp_awarded == 10  # first completion of the lesson
     assert session.result is not None and session.result["rewards"]["xp_awarded"] == 10
 
 

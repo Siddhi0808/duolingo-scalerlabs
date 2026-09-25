@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { AppShell } from "@/components/layout/AppShell";
 import { UnitHeader } from "@/components/path/UnitHeader";
 import { SkillNode } from "@/components/path/SkillNode";
@@ -27,8 +28,25 @@ export default function Home() {
     refetch: refetchMe,
   } = useMe();
 
+  const hasScrolledRef = useRef(false);
+
   const isLoading = isPathLoading || isMeLoading;
   const error = pathError || meError;
+
+  // Scroll to current active skill node when path data loads
+  useEffect(() => {
+    if (isLoading || !pathData?.current_skill_id || hasScrolledRef.current) return;
+
+    const timer = setTimeout(() => {
+      const el = document.getElementById("current-skill-node");
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+        hasScrolledRef.current = true;
+      }
+    }, 150);
+
+    return () => clearTimeout(timer);
+  }, [isLoading, pathData?.current_skill_id]);
 
   const handleRetry = () => {
     refetchPath();
@@ -104,19 +122,27 @@ export default function Home() {
                         const dot1X = xCurrent + (xNext - xCurrent) * 0.35;
                         const dot2X = xCurrent + (xNext - xCurrent) * 0.65;
 
+                        const nextIsCurrent = hasNextInUnit && unit.skills[skillIdx + 1]?.is_current;
+
                         return (
-                          <div key={skill.id} className="flex flex-col items-center">
+                          <div
+                            key={skill.id}
+                            id={skill.is_current ? "current-skill-node" : undefined}
+                            className="flex flex-col items-center"
+                          >
                             <SkillNode skill={skill} pathIndex={globalIdx} />
 
                             {/* Stepping stone connectors to next node */}
                             {hasNextInUnit && (
-                              <div className="my-2 flex flex-col items-center gap-2">
+                              <div
+                                className={`my-3 ${nextIsCurrent ? "mb-12" : ""} flex flex-col items-center gap-2.5`}
+                              >
                                 <span
-                                  className="h-2.5 w-2.5 rounded-full bg-slate-200 transition-transform shadow-xs"
+                                  className="h-2.5 w-2.5 rounded-full bg-slate-300 transition-transform shadow-xs"
                                   style={{ transform: `translateX(${dot1X}px)` }}
                                 />
                                 <span
-                                  className="h-2.5 w-2.5 rounded-full bg-slate-200 transition-transform shadow-xs"
+                                  className="h-2.5 w-2.5 rounded-full bg-slate-300 transition-transform shadow-xs"
                                   style={{ transform: `translateX(${dot2X}px)` }}
                                 />
                               </div>

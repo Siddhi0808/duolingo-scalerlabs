@@ -74,7 +74,8 @@ export function MultipleChoiceExercise({
                   {idx + 1}
                 </span>
 
-                <span className="text-lg font-black tracking-tight text-ink">{option.text}</span>
+                {/* Inherits the card colour, so selected/graded states tint the text too */}
+                <span className="text-lg font-black tracking-tight">{option.text}</span>
               </div>
 
               {option.image && (

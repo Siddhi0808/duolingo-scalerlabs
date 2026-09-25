@@ -49,8 +49,8 @@ export function FillBlankExercise({
         </div>
 
         {payload.hint && (
-          <p className="mt-4 text-xs font-black uppercase tracking-wider text-ink-soft">
-            Hint: {payload.hint}
+          <p className="mt-4 text-sm font-bold text-ink-soft">
+            {payload.hint}
           </p>
         )}
       </div>
@@ -59,13 +59,18 @@ export function FillBlankExercise({
       <div className="flex flex-wrap justify-center gap-3 pt-4">
         {payload.options.map((option) => {
           const isSelected = selectedText === option.text;
-          const buttonStyle = isGraded && isSelected
-            ? isCorrect
-              ? "border-brand-shadow bg-brand-light text-brand-shadow shadow-xs"
-              : "border-danger-shadow bg-danger-light text-danger shadow-xs"
-            : isSelected
-            ? "border-sky-shadow bg-sky-light text-sky shadow-xs"
-            : "border-line bg-surface text-ink hover:bg-canvas hover:border-slate-300 active:translate-y-1 active:border-b-2";
+
+          if (isSelected) {
+            return (
+              <div
+                key={option.id}
+                aria-hidden
+                className="rounded-2xl border-2 border-b-4 border-transparent bg-line/70 px-6 py-3.5 text-lg font-black text-transparent select-none"
+              >
+                {option.text}
+              </div>
+            );
+          }
 
           return (
             <button
@@ -73,7 +78,7 @@ export function FillBlankExercise({
               type="button"
               disabled={disabled}
               onClick={() => onSelectText(option.text)}
-              className={`rounded-2xl border-2 border-b-4 px-6 py-3.5 text-lg font-black transition shadow-xs ${buttonStyle}`}
+              className="rounded-2xl border-2 border-b-4 border-line bg-surface px-6 py-3.5 text-lg font-black text-ink transition shadow-xs hover:bg-canvas hover:border-slate-300 active:translate-y-1 active:border-b-2"
             >
               {option.text}
             </button>

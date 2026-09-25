@@ -28,12 +28,12 @@ export default function LeaderboardPage() {
         {/* Main Leaderboard Table */}
         <main className="w-full max-w-xl">
           {/* Header Banner */}
-          <div className="flex items-center gap-4 rounded-3xl border-2 border-gold-shadow/30 bg-gold/15 p-6 shadow-xs">
-            <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gold text-white shadow-md">
+          <div className="flex items-center gap-4 rounded-3xl border-2 border-brand-shadow/30 bg-brand-light/40 p-6 shadow-xs">
+            <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-brand text-white shadow-md">
               <TrophyIcon className="h-10 w-10 fill-white" />
             </div>
             <div>
-              <span className="text-xs font-black uppercase tracking-widest text-gold-shadow">
+              <span className="text-xs font-black uppercase tracking-widest text-brand-shadow">
                 Emerald League
               </span>
               <h1 className="text-2xl font-black text-ink">Leaderboard</h1>

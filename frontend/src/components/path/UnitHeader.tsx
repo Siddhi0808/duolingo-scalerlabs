@@ -37,8 +37,8 @@ export function UnitHeader({ unit }: UnitHeaderProps) {
         </div>
 
         {/* Right side stats & Guidebook indicator */}
-        <div className="flex flex-col items-end gap-2 text-right">
-          <div className="rounded-xl border-2 border-white/30 bg-white/15 px-3 py-1 text-xs font-black text-white shadow-xs">
+        <div className="flex flex-col items-end gap-2 text-right shrink-0">
+          <div className="rounded-xl border-2 border-white/30 bg-white/15 px-3 py-1 text-xs font-black text-white shadow-xs whitespace-nowrap">
             {unit.completed_skills} / {unit.total_skills} skills
           </div>
         </div>

@@ -1,7 +1,7 @@
 """FastAPI application factory.
 
-Wires cross-cutting concerns (CORS, routers) in one place. Business logic never
-lives here; later milestones only add `include_router` lines and exception handlers.
+Wires cross-cutting concerns (CORS, error handlers, routers) in one place. Business
+logic never lives here.
 """
 
 from collections.abc import AsyncIterator

@@ -11,27 +11,13 @@ import {
   StarIcon,
   TargetIcon,
   TrophyIcon,
+  getAchievementIcon,
 } from "@/components/common/Icons";
 import { HeartRefillModal } from "@/components/hearts/HeartRefillModal";
 import { ErrorState } from "@/components/common/ErrorState";
 import { useMe } from "@/lib/api/hooks";
 import type { AchievementProgress } from "@/lib/api/types";
 import { ApiClientError } from "@/lib/api/client";
-
-function getAchievementIcon(icon: string) {
-  switch (icon) {
-    case "flame":
-      return <FlameIcon className="h-6 w-6 fill-flame" />;
-    case "crown":
-      return <TrophyIcon className="h-6 w-6 fill-gold" />;
-    case "star":
-      return <StarIcon className="h-6 w-6 fill-gold" />;
-    case "target":
-      return <TargetIcon className="h-6 w-6 fill-danger" />;
-    default:
-      return <TrophyIcon className="h-6 w-6 fill-sky" />;
-  }
-}
 
 export default function ProfilePage() {
   const { data: me, error, isLoading, refetch } = useMe();
@@ -232,13 +218,17 @@ export default function ProfilePage() {
                   <div className="text-lg font-black text-ink">
                     {me.hearts.current} / {me.hearts.max}
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => setShowHeartModal(true)}
-                    className="text-xs font-extrabold text-brand hover:underline"
-                  >
-                    Refill Hearts
-                  </button>
+                  {me.hearts.current < me.hearts.max ? (
+                    <button
+                      type="button"
+                      onClick={() => setShowHeartModal(true)}
+                      className="text-xs font-extrabold text-brand hover:underline"
+                    >
+                      Refill Hearts
+                    </button>
+                  ) : (
+                    <span className="text-xs font-bold text-ink-soft">Full</span>
+                  )}
                 </div>
               </div>
 
@@ -264,7 +254,17 @@ export default function ProfilePage() {
           </div>
 
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            {me.achievements.map((ach) => {
+            {Object.values(
+              me.achievements.reduce<Record<string, AchievementProgress[]>>((acc, ach) => {
+                acc[ach.title] = acc[ach.title] || [];
+                acc[ach.title].push(ach);
+                return acc;
+              }, {})
+            ).map((tiers) => {
+              tiers.sort((a, b) => a.tier - b.tier);
+              const ach = tiers.find((t) => !t.unlocked) || tiers[tiers.length - 1];
+              const unlockedTiers = tiers.filter((t) => t.unlocked);
+              const allUnlocked = unlockedTiers.length === tiers.length;
               const percent = Math.min(
                 100,
                 Math.floor((ach.current / ach.target) * 100)
@@ -275,7 +275,7 @@ export default function ProfilePage() {
                   key={ach.code}
                   onClick={() => setSelectedAchievement(ach)}
                   className={`cursor-pointer rounded-2xl border-2 p-4 transition hover:brightness-102 ${
-                    ach.unlocked
+                    allUnlocked
                       ? "border-gold-shadow/30 bg-gold/5"
                       : "border-line bg-surface hover:bg-canvas"
                   }`}
@@ -284,7 +284,7 @@ export default function ProfilePage() {
                     {/* Badge Icon */}
                     <div
                       className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl ${
-                        ach.unlocked
+                        unlockedTiers.length > 0
                           ? "bg-gold/20 text-gold-shadow shadow-xs"
                           : "bg-canvas text-locked-ink"
                       }`}
@@ -298,7 +298,7 @@ export default function ProfilePage() {
                           {ach.title}
                         </h3>
                         <span className="rounded-md bg-canvas px-2 py-0.5 text-[10px] font-black uppercase text-ink-soft">
-                          Tier {ach.tier}
+                          Tier {ach.tier} of {tiers.length}
                         </span>
                       </div>
 
@@ -307,14 +307,18 @@ export default function ProfilePage() {
                       </p>
 
                       {/* Status / Progress */}
-                      {ach.unlocked ? (
+                      {allUnlocked ? (
                         <div className="pt-1 text-[11px] font-black text-brand">
-                          Unlocked ✓
+                          All Tiers Unlocked ✓
                         </div>
                       ) : (
                         <div className="pt-2">
                           <div className="flex items-center justify-between text-[10px] font-bold text-ink-soft">
-                            <span>Progress</span>
+                            <span>
+                              {unlockedTiers.length > 0
+                                ? `Tier ${unlockedTiers.length} done · Next`
+                                : "Progress"}
+                            </span>
                             <span>
                               {ach.current} / {ach.target}
                             </span>
@@ -347,7 +351,7 @@ export default function ProfilePage() {
       {/* Achievement Detail Dialog */}
       {selectedAchievement && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
-          <div className="w-full max-w-sm rounded-3xl border-2 border-line bg-surface p-6 text-center shadow-2xl">
+          <div className="w-full max-w-sm rounded-3xl border-2 border-line bg-surface p-6 text-center shadow-2xl animate-pop">
             <div
               className={`mx-auto flex h-20 w-20 items-center justify-center rounded-3xl ${
                 selectedAchievement.unlocked ? "bg-gold/20 shadow-md" : "bg-canvas"

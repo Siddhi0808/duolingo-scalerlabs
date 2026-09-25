@@ -75,7 +75,7 @@ export function TypeAnswerExercise({
           }}
           placeholder="Type in Spanish..."
           rows={3}
-          className="w-full resize-none rounded-2xl border-2 border-b-4 border-line bg-surface p-4 text-xl font-black text-ink placeholder:text-locked-ink focus:border-sky-shadow focus:bg-sky-light/10 focus:outline-hidden transition shadow-xs"
+          className="w-full resize-none rounded-2xl border-2 border-b-4 border-line bg-surface p-4 text-lg font-bold text-ink placeholder:text-locked-ink focus:border-sky-shadow focus:bg-sky-light/10 focus:outline-hidden transition shadow-xs"
         />
 
         {/* Special characters keyboard row for Spanish */}

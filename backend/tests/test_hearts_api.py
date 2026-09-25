@@ -204,9 +204,9 @@ def test_refill_from_zero_or_partial(
 ) -> None:
     set_hearts(seeded, "learner", start_hearts, T0)
     body = client.post("/api/v1/hearts/refill").json()
-    assert body["refilled"] is True and body["gems_spent"] == 350 and body["gems"] == 250
+    assert body["refilled"] is True and body["gems_spent"] == 350 and body["gems"] == 1150
     assert body["hearts"]["current"] == 5 and body["hearts"]["regenerating"] is False
-    assert hearts_in_db(factory) == (5, 250)
+    assert hearts_in_db(factory) == (5, 1150)
 
 
 def test_refill_at_full_hearts_is_a_free_no_op(
@@ -215,8 +215,8 @@ def test_refill_at_full_hearts_is_a_free_no_op(
     first = client.post("/api/v1/hearts/refill").json()  # seeded learner has 5/5
     second = client.post("/api/v1/hearts/refill").json()
     for body in (first, second):
-        assert (body["refilled"], body["gems_spent"], body["gems"]) == (False, 0, 600)
-    assert hearts_in_db(factory) == (5, 600)
+        assert (body["refilled"], body["gems_spent"], body["gems"]) == (False, 0, 1500)
+    assert hearts_in_db(factory) == (5, 1500)
 
 
 def test_refill_counts_regenerated_hearts_first(
@@ -224,8 +224,8 @@ def test_refill_counts_regenerated_hearts_first(
 ) -> None:
     set_hearts(seeded, "learner", 3, T0 - 90 * MIN)  # regenerated to 5 by now
     body = client.post("/api/v1/hearts/refill").json()
-    assert body["refilled"] is False and body["gems"] == 600  # nothing to buy
-    assert hearts_in_db(factory) == (5, 600)
+    assert body["refilled"] is False and body["gems"] == 1500  # nothing to buy
+    assert hearts_in_db(factory) == (5, 1500)
 
 
 def test_refill_is_idempotent_and_never_exceeds_max(
@@ -235,7 +235,7 @@ def test_refill_is_idempotent_and_never_exceeds_max(
     results = [client.post("/api/v1/hearts/refill").json() for _ in range(3)]
     assert [r["refilled"] for r in results] == [True, False, False]
     assert all(r["hearts"]["current"] == 5 for r in results)
-    assert hearts_in_db(factory) == (5, 250)  # charged once
+    assert hearts_in_db(factory) == (5, 1150)  # charged once
 
 
 def test_refill_without_enough_gems(
@@ -317,7 +317,7 @@ def test_concurrent_refills_charge_once(
 
     assert race(monkeypatch, refill, refill) == []
     assert sorted(outcomes) == [False, True]
-    assert hearts_in_db(factory) == (5, 250)
+    assert hearts_in_db(factory) == (5, 1150)
 
 
 def test_refill_committed_between_an_answers_read_and_write_is_not_lost(
@@ -382,7 +382,7 @@ def test_refill_committed_between_an_answers_read_and_write_is_not_lost(
         thread.join()
 
     assert errors == []
-    assert hearts_in_db(factory) == (4, 250)  # refill kept, then one heart lost
+    assert hearts_in_db(factory) == (4, 1150)  # refill kept, then one heart lost
     with factory() as db:
         count = select(func.count()).select_from(SessionAnswer)
         assert db.scalar(count.where(SessionAnswer.session_id == session_id)) == 1
@@ -413,12 +413,12 @@ def test_optimistic_locking_retry_recovers_from_concurrent_mutation(
         now = utc_now()
         res = hearts.refill(db2, u2, now)
         assert res.refilled is True
-        # 600 - 50 (db1) - 350 (refill) = 200 gems
-        assert res.gems == 200
+        # 1500 - 50 (db1) - 350 (refill) = 1100 gems
+        assert res.gems == 1100
         assert u2.hearts == 5
 
     with factory() as db:
         final_user = db.scalars(select(User).where(User.username == "learner")).one()
-        assert final_user.gems == 200
+        assert final_user.gems == 1100
         assert final_user.hearts == 5
         assert final_user.version == initial_version + 2

@@ -1,4 +1,4 @@
-"""Path service against the real seeded course (M2 content), without HTTP."""
+"""Path service against the real seeded course (seeded content), without HTTP."""
 
 from collections.abc import Iterable
 

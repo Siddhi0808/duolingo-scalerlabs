@@ -1,7 +1,7 @@
 """Game-rule constants in one place, so every number is tunable and explainable.
 
-M1 only uses the values the schema needs (defaults and CHECK bounds). XP amounts,
-regeneration interval and gem prices are added with the services that use them.
+The heart regeneration interval is a setting (HEART_REGEN_MINUTES), not a constant,
+so demos can shorten it.
 """
 
 MAX_HEARTS = 5

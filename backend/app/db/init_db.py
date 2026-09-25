@@ -3,7 +3,7 @@
 Usage:  python -m app.db.init_db
 
 `create_all` only creates missing tables, so it is safe to run repeatedly. There are
-no migrations: the schema is rebuilt from the models (the M2 seed script resets it).
+no migrations: the schema is rebuilt from the models (`python -m app.db.seed --reset`).
 """
 
 from sqlalchemy import Engine, inspect

@@ -13,7 +13,7 @@ carry an unexpected field such as a leaked answer.
   type_answer      source_text, answer_language             accepted[str, ...]
 
 The browser's submitted answer shapes (option_id / tile_ids / pairs / text) belong to
-the lesson engine (M4) and are defined there.
+the lesson engine and are defined in app/schemas/lesson.py.
 """
 
 from collections import Counter

@@ -10,7 +10,7 @@ Determinism rules:
 * Nothing here calls `random` or reads the clock.
 
 This module seeds *state only*. It does not compute XP, streaks, hearts or unlocking;
-those rules belong to the services (M3+). Stored counters are copied from the data
+those rules belong to the services. Stored counters are copied from the data
 files, except xp_total, which is the sum of the user's seeded XP events (the ledger
 invariant).
 """

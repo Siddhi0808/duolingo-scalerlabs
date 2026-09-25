@@ -31,6 +31,9 @@ export function SkillNode({ skill, pathIndex }: SkillNodeProps) {
   useEffect(() => {
     if (!isOpen) return;
 
+    // Bring the whole popover on screen (scroll-mb keeps it clear of the mobile bottom nav).
+    popoverRef.current?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+
     function handleClickOutside(event: MouseEvent) {
       if (popoverRef.current && !popoverRef.current.contains(event.target as Node)) {
         setIsOpen(false);
@@ -128,7 +131,7 @@ export function SkillNode({ skill, pathIndex }: SkillNodeProps) {
 
       {/* Skill Title underneath */}
       <span
-        className={`mt-2 text-center text-xs font-black tracking-wide max-w-[110px] truncate ${
+        className={`mt-2 text-center text-xs font-black tracking-wide max-w-[124px] line-clamp-2 leading-tight ${
           isLocked ? "text-locked-ink" : "text-ink"
         }`}
       >
@@ -139,10 +142,17 @@ export function SkillNode({ skill, pathIndex }: SkillNodeProps) {
       {isOpen && (
         <div
           ref={popoverRef}
-          className="absolute top-24 z-40 w-72 max-w-[calc(100vw-32px)] rounded-2xl border-2 border-line bg-surface p-4 shadow-2xl"
-          style={{ transform: `translateX(${-xOffset}px)` }}
+          className="absolute top-full z-40 mt-4 w-72 max-w-[calc(100vw-32px)] scroll-mb-24 rounded-2xl border-2 border-line bg-surface p-4 shadow-2xl animate-pop"
+          // `translate` (not `transform`) so it composes with the animate-pop scale.
+          style={{ translate: `${-xOffset}px 0` }}
         >
-          <div className="flex items-start justify-between">
+          {/* Caret pointing up at the node (the popover itself is re-centred on screen) */}
+          <span
+            aria-hidden
+            className="absolute -top-[9px] h-4 w-4 rotate-45 border-l-2 border-t-2 border-line bg-surface"
+            style={{ left: `calc(50% + ${xOffset}px - 8px)` }}
+          />
+          <div className="flex items-start justify-between gap-2">
             <div>
               <h3 className="text-base font-black text-ink">{skill.title}</h3>
               <p className="mt-0.5 text-xs font-semibold text-ink-soft">
@@ -152,7 +162,8 @@ export function SkillNode({ skill, pathIndex }: SkillNodeProps) {
             <button
               type="button"
               onClick={() => setIsOpen(false)}
-              className="text-ink-soft hover:text-ink font-black text-sm p-1"
+              aria-label="Close"
+              className="-mr-2 -mt-2 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-sm font-black text-ink-soft transition hover:bg-canvas hover:text-ink"
             >
               ✕
             </button>
@@ -201,7 +212,7 @@ export function SkillNode({ skill, pathIndex }: SkillNodeProps) {
                   </span>
                   <span>
                     {lessonIsCompleted ? (
-                      <span className="flex items-center gap-1 text-[11px] text-brand">
+                      <span className="flex items-center gap-1 text-[11px] text-gold-shadow">
                         Done ✓
                       </span>
                     ) : (
@@ -219,16 +230,16 @@ export function SkillNode({ skill, pathIndex }: SkillNodeProps) {
           {skill.next_lesson_id ? (
             <Link
               href={`/lesson/${skill.next_lesson_id}`}
-              className="mt-4 flex w-full items-center justify-center rounded-xl border-b-4 border-brand-shadow bg-brand py-2.5 text-xs font-black uppercase tracking-wider text-white transition hover:brightness-105 active:translate-y-1 active:border-b-0"
+              className="mt-4 flex w-full items-center justify-center rounded-2xl border-b-4 border-brand-shadow bg-brand py-3 text-sm font-black uppercase tracking-wider text-white transition hover:brightness-105 active:translate-y-1 active:border-b-0"
             >
-              {isInProgress ? "Continue Lesson" : "Start Lesson"} (+10 XP)
+              {isInProgress ? "Continue" : "Start"} +10 XP
             </Link>
           ) : isCompleted && skill.lessons.length > 0 ? (
             <Link
               href={`/lesson/${skill.lessons[0].id}`}
-              className="mt-4 flex w-full items-center justify-center rounded-xl border-b-4 border-gold-shadow bg-gold py-2.5 text-xs font-black uppercase tracking-wider text-white transition hover:brightness-105 active:translate-y-1 active:border-b-0"
+              className="mt-4 flex w-full items-center justify-center rounded-2xl border-b-4 border-gold-shadow bg-gold py-3 text-sm font-black uppercase tracking-wider text-white transition hover:brightness-105 active:translate-y-1 active:border-b-0"
             >
-              Practice Skill (+0 XP)
+              Practice
             </Link>
           ) : null}
         </div>

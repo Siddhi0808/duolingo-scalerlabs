@@ -5,14 +5,14 @@ Metrics are derived from persisted state at evaluation time:
   streak             the learner's current streak (as displayed today)
   lessons_completed  number of lesson_completions rows (distinct lessons)
   perfect_lessons    lesson_completions with best_mistakes == 0
-  skills_completed   skills whose every lesson is completed (M3 path rules)
+  skills_completed   skills whose every lesson is completed (path_rules)
 
 `evaluate` must run *after* the completion, XP and streak updates in the same
 transaction, so it sees the new values. It is idempotent: it only inserts rows for
 achievements not yet unlocked, and the (user_id, achievement_id) primary key makes a
 duplicate impossible even if called twice.
 
-Gem rewards on achievements are not paid out yet (gems economy is a later milestone).
+Gem rewards on achievements are listed but not paid out (the gem economy is mocked).
 """
 
 from datetime import date, datetime

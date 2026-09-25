@@ -12,6 +12,8 @@ interface MatchingPairsExerciseProps {
   onSelectRight: (id: string) => void;
   onUnpair: (leftId: string) => void;
   disabled: boolean;
+  isGraded?: boolean;
+  isCorrect?: boolean;
 }
 
 export function MatchingPairsExercise({
@@ -24,9 +26,20 @@ export function MatchingPairsExercise({
   onSelectRight,
   onUnpair,
   disabled,
+  isGraded = false,
+  isCorrect,
 }: MatchingPairsExerciseProps) {
-  const pairedLeftIds = new Set(pairs.map((p) => p[0]));
-  const pairedRightIds = new Set(pairs.map((p) => p[1]));
+  const getPairIndex = (leftId?: string, rightId?: string) => {
+    if (leftId) {
+      const idx = pairs.findIndex((p) => p[0] === leftId);
+      return idx >= 0 ? idx + 1 : null;
+    }
+    if (rightId) {
+      const idx = pairs.findIndex((p) => p[1] === rightId);
+      return idx >= 0 ? idx + 1 : null;
+    }
+    return null;
+  };
 
   return (
     <div className="mx-auto w-full max-w-xl space-y-6">
@@ -36,8 +49,27 @@ export function MatchingPairsExercise({
         {/* Left Column */}
         <div className="space-y-3">
           {payload.left.map((item) => {
-            const isPaired = pairedLeftIds.has(item.id);
+            const pairIdx = getPairIndex(item.id, undefined);
+            const isPaired = pairIdx !== null;
             const isSelected = selectedLeftId === item.id;
+
+            let buttonStyle = "border-line bg-surface text-ink hover:bg-canvas hover:border-slate-300 active:translate-y-1 active:border-b-2";
+            let badgeStyle = "bg-slate-200 text-slate-600 border border-slate-300";
+
+            if (isGraded && isPaired) {
+              if (isCorrect) {
+                buttonStyle = "border-brand-shadow bg-brand-light text-brand-shadow cursor-default";
+                badgeStyle = "bg-brand text-white";
+              } else {
+                buttonStyle = "border-danger-shadow bg-danger-light text-danger cursor-default";
+                badgeStyle = "bg-danger text-white";
+              }
+            } else if (isPaired) {
+              buttonStyle = "border-slate-300 bg-slate-100 text-slate-600 cursor-pointer hover:bg-slate-200/70 border-b-2";
+              badgeStyle = "bg-slate-200 text-slate-600 border border-slate-300";
+            } else if (isSelected) {
+              buttonStyle = "border-sky-shadow bg-sky-light text-sky active:translate-y-1 active:border-b-2";
+            }
 
             return (
               <button
@@ -48,15 +80,16 @@ export function MatchingPairsExercise({
                   if (isPaired) onUnpair(item.id);
                   else onSelectLeft(item.id);
                 }}
-                className={`w-full rounded-2xl border-2 border-b-4 p-4 text-center font-black transition text-base shadow-xs ${
-                  isPaired
-                    ? "border-sky-shadow/60 bg-sky-light/40 text-sky font-black cursor-pointer"
-                    : isSelected
-                    ? "border-sky-shadow bg-sky-light text-sky active:translate-y-1 active:border-b-2"
-                    : "border-line bg-surface text-ink hover:bg-canvas hover:border-slate-300 active:translate-y-1 active:border-b-2"
-                }`}
+                className={`relative flex items-center justify-center w-full rounded-2xl border-2 border-b-4 p-4 text-center font-black transition text-base shadow-xs ${buttonStyle}`}
               >
-                {item.text}
+                <span>{item.text}</span>
+                {pairIdx !== null && (
+                  <span
+                    className={`absolute right-3.5 top-1/2 -translate-y-1/2 flex h-6 w-6 items-center justify-center rounded-full text-xs font-black shadow-xs ${badgeStyle}`}
+                  >
+                    {pairIdx}
+                  </span>
+                )}
               </button>
             );
           })}
@@ -65,8 +98,27 @@ export function MatchingPairsExercise({
         {/* Right Column */}
         <div className="space-y-3">
           {payload.right.map((item) => {
-            const isPaired = pairedRightIds.has(item.id);
+            const pairIdx = getPairIndex(undefined, item.id);
+            const isPaired = pairIdx !== null;
             const isSelected = selectedRightId === item.id;
+
+            let buttonStyle = "border-line bg-surface text-ink hover:bg-canvas hover:border-slate-300 active:translate-y-1 active:border-b-2";
+            let badgeStyle = "bg-slate-200 text-slate-600 border border-slate-300";
+
+            if (isGraded && isPaired) {
+              if (isCorrect) {
+                buttonStyle = "border-brand-shadow bg-brand-light text-brand-shadow cursor-default";
+                badgeStyle = "bg-brand text-white";
+              } else {
+                buttonStyle = "border-danger-shadow bg-danger-light text-danger cursor-default";
+                badgeStyle = "bg-danger text-white";
+              }
+            } else if (isPaired) {
+              buttonStyle = "border-slate-300 bg-slate-100 text-slate-600 cursor-pointer hover:bg-slate-200/70 border-b-2";
+              badgeStyle = "bg-slate-200 text-slate-600 border border-slate-300";
+            } else if (isSelected) {
+              buttonStyle = "border-sky-shadow bg-sky-light text-sky active:translate-y-1 active:border-b-2";
+            }
 
             return (
               <button
@@ -81,15 +133,16 @@ export function MatchingPairsExercise({
                     onSelectRight(item.id);
                   }
                 }}
-                className={`w-full rounded-2xl border-2 border-b-4 p-4 text-center font-black transition text-base shadow-xs ${
-                  isPaired
-                    ? "border-sky-shadow/60 bg-sky-light/40 text-sky font-black cursor-pointer"
-                    : isSelected
-                    ? "border-sky-shadow bg-sky-light text-sky active:translate-y-1 active:border-b-2"
-                    : "border-line bg-surface text-ink hover:bg-canvas hover:border-slate-300 active:translate-y-1 active:border-b-2"
-                }`}
+                className={`relative flex items-center justify-center w-full rounded-2xl border-2 border-b-4 p-4 text-center font-black transition text-base shadow-xs ${buttonStyle}`}
               >
-                {item.text}
+                <span>{item.text}</span>
+                {pairIdx !== null && (
+                  <span
+                    className={`absolute right-3.5 top-1/2 -translate-y-1/2 flex h-6 w-6 items-center justify-center rounded-full text-xs font-black shadow-xs ${badgeStyle}`}
+                  >
+                    {pairIdx}
+                  </span>
+                )}
               </button>
             );
           })}

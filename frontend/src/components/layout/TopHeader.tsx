@@ -2,7 +2,13 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { FlameIcon, GemIcon, HeartIcon, SpanishFlag } from "@/components/common/Icons";
+import {
+  FlameIcon,
+  GemIcon,
+  HeartIcon,
+  LightningIcon,
+  SpanishFlag,
+} from "@/components/common/Icons";
 import { HeartRefillModal } from "@/components/hearts/HeartRefillModal";
 import { useHeartCountdown } from "@/lib/api/hooks";
 import type { MeResponse } from "@/lib/api/types";
@@ -30,36 +36,50 @@ export function TopHeader({ me, isLoading }: TopHeaderProps) {
           </Link>
         </div>
 
-        {/* Counters: Streak, Gems, Hearts */}
-        <div className="flex items-center gap-2 sm:gap-6">
+        {/* Counters: Streak, XP, Gems, Hearts */}
+        <div className="flex items-center gap-1 sm:gap-4">
           {/* Streak */}
           <Link
             href="/profile"
-            title={`${me?.streak.current ?? 0}-day streak (Longest: ${me?.streak.longest ?? 0})`}
+            title={me ? `${me.streak.current}-day streak (Longest: ${me.streak.longest})` : "Streak"}
             className="flex items-center gap-1.5 rounded-xl px-2 py-1 text-flame transition hover:bg-canvas sm:px-3 sm:py-1.5"
           >
             <FlameIcon
               className={`h-6 w-6 ${
-                (me?.streak.current ?? 0) > 0 ? "fill-flame" : "fill-locked-ink"
+                me && me.streak.current > 0 ? "fill-flame" : "fill-locked-ink"
               }`}
             />
             <span
               className={`text-base font-extrabold ${
-                (me?.streak.current ?? 0) > 0 ? "text-flame" : "text-locked-ink"
+                me && me.streak.current > 0 ? "text-flame" : "text-locked-ink"
               }`}
             >
-              {isLoading ? "—" : me?.streak.current ?? 0}
+              {isLoading || !me ? "—" : me.streak.current}
+            </span>
+          </Link>
+
+          {/* Total XP */}
+          <Link
+            href="/profile"
+            title={me ? `${me.xp_total} total XP` : "Total XP"}
+            className="flex items-center gap-1.5 rounded-xl px-2 py-1 text-gold-shadow transition hover:bg-canvas sm:px-3 sm:py-1.5"
+          >
+            <LightningIcon className="h-6 w-6 fill-gold" />
+            <span className="text-base font-extrabold">
+              {isLoading || !me ? "—" : me.xp_total}
             </span>
           </Link>
 
           {/* Gems */}
           <Link
             href="/profile"
-            title={`${me?.gems ?? 0} gems`}
+            title={me ? `${me.gems} gems` : "Gems"}
             className="flex items-center gap-1.5 rounded-xl px-2 py-1 text-gem transition hover:bg-canvas sm:px-3 sm:py-1.5"
           >
             <GemIcon className="h-6 w-6 fill-gem" />
-            <span className="text-base font-extrabold">{isLoading ? "—" : me?.gems ?? 0}</span>
+            <span className="text-base font-extrabold">
+              {isLoading || !me ? "—" : me.gems}
+            </span>
           </Link>
 
           {/* Hearts with Refill Trigger */}
@@ -67,11 +87,16 @@ export function TopHeader({ me, isLoading }: TopHeaderProps) {
             type="button"
             onClick={() => setShowHeartModal(true)}
             aria-label="Hearts status and refill"
-            className="flex items-center gap-1.5 rounded-xl px-2 py-1 text-heart transition hover:bg-canvas active:translate-y-0.5 sm:px-3 sm:py-1.5"
+            className={`flex items-center gap-1.5 rounded-xl px-2 py-1 transition hover:bg-canvas active:translate-y-0.5 sm:px-3 sm:py-1.5 ${
+              me && me.hearts.current === 0 ? "text-locked-ink" : "text-heart"
+            }`}
           >
-            <HeartIcon className="h-6 w-6 fill-heart" />
+            {/* Grey at zero, like the streak counter and the lesson header */}
+            <HeartIcon
+              className={`h-6 w-6 ${me && me.hearts.current === 0 ? "fill-locked-ink" : "fill-heart"}`}
+            />
             <span className="text-base font-extrabold">
-              {isLoading ? "—" : me?.hearts.current ?? 5}
+              {isLoading || !me ? "—" : me.hearts.current}
             </span>
             {isRegenerating && formatted && (
               <span className="ml-1 hidden rounded-md bg-danger-light px-1.5 py-0.5 text-xs font-bold text-danger sm:inline">
@@ -80,12 +105,12 @@ export function TopHeader({ me, isLoading }: TopHeaderProps) {
             )}
           </button>
 
-          {/* User Avatar */}
+          {/* User Avatar (phones reach the profile via the bottom nav) */}
           {me && (
             <Link
               href="/profile"
               title={`${me.display_name} (@${me.username})`}
-              className="flex h-9 w-9 items-center justify-center rounded-full text-xs font-black text-white shadow-xs transition hover:opacity-90 active:scale-95"
+              className="ml-1 hidden h-9 w-9 items-center sm:flex justify-center rounded-full text-xs font-black text-white shadow-xs transition hover:opacity-90 active:scale-95"
               style={{ backgroundColor: me.avatar_color }}
             >
               {me.display_name.charAt(0).toUpperCase()}

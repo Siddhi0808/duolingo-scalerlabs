@@ -32,10 +32,10 @@ export function OutOfHeartsModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
-      <div className="w-full max-w-sm rounded-3xl border-2 border-line bg-surface p-6 text-center shadow-2xl">
-        {/* Broken / Empty Heart Icon */}
-        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-danger-light text-danger">
-          <HeartIcon className="h-12 w-12 fill-danger animate-pulse" />
+      <div className="w-full max-w-sm rounded-3xl border-2 border-line bg-surface p-6 text-center shadow-2xl animate-pop">
+        {/* Empty heart: matches the grey 0-hearts counter in the lesson header */}
+        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-canvas">
+          <HeartIcon className="h-12 w-12 fill-locked-ink" />
         </div>
 
         <h3 className="mt-4 text-2xl font-black text-ink">Out of Hearts!</h3>
@@ -85,7 +85,7 @@ export function OutOfHeartsModal({
           <button
             type="button"
             onClick={onQuit}
-            className="w-full rounded-2xl border-2 border-line bg-surface py-3 text-sm font-black uppercase tracking-wider text-ink-soft hover:bg-canvas active:translate-y-0.5 transition"
+            className="w-full rounded-2xl border-2 border-b-4 border-line bg-surface py-3 text-sm font-black uppercase tracking-wider text-ink-soft transition hover:bg-canvas active:translate-y-1 active:border-b-2"
           >
             Back to Learning Path
           </button>

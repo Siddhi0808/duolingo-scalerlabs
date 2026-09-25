@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
+  GearIcon,
   LearnIcon,
   TrophyIcon,
   UserIcon,
@@ -18,6 +19,7 @@ const navItems: NavItem[] = [
   { label: "Learn", href: "/", icon: LearnIcon },
   { label: "Leaderboard", href: "/leaderboard", icon: TrophyIcon },
   { label: "Profile", href: "/profile", icon: UserIcon },
+  { label: "Settings", href: "/settings", icon: GearIcon },
 ];
 
 export function Sidebar() {

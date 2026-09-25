@@ -34,7 +34,10 @@ class Settings(BaseSettings):
 
     @property
     def cors_origin_list(self) -> list[str]:
-        return [origin.strip() for origin in self.cors_origins.split(",") if origin.strip()]
+        # Browsers send Origin without a trailing slash, so "https://x.app/" (as copied from
+        # the address bar) must become "https://x.app" or every request would be rejected.
+        origins = (origin.strip().rstrip("/") for origin in self.cors_origins.split(","))
+        return [origin for origin in origins if origin]
 
 
 @lru_cache

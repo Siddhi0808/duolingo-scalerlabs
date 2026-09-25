@@ -101,7 +101,7 @@ class SessionProgress(_Strict):
 class SessionState(_Strict):
     session_id: str
     mode: SessionMode
-    lesson: LessonRef | None  # null for practice sessions (M6)
+    lesson: LessonRef | None  # null for practice sessions
     progress: SessionProgress
     hearts: HeartInfo
     current_exercise: PublicExercise | None  # null once the session has ended

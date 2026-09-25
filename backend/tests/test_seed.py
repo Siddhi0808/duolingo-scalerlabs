@@ -1,4 +1,4 @@
-"""M2 seed tests: content shape, answer secrecy, learner/bot state and determinism."""
+"""Seed tests: content shape, answer secrecy, learner/bot state and determinism."""
 
 import json
 from collections import Counter
@@ -196,12 +196,12 @@ def test_default_learner_exists(seeded: Session) -> None:
 
 def test_learner_has_partial_believable_progress(seeded: Session) -> None:
     user = learner(seeded)
-    assert user.xp_total == 80  # 8 completed sessions x 10 XP (M5 rule)
+    assert user.xp_total == 80  # 8 completed sessions x 10 XP
     assert user.xp_total == sum(event.amount for event in user.xp_events)
     assert (user.streak_count, user.longest_streak) == (6, 6)
     assert user.last_streak_date == REFERENCE_DAY - timedelta(days=1)
     assert user.hearts == 5  # overnight regeneration: the demo starts with full hearts
-    assert user.gems == 600
+    assert user.gems == 1500
     assert len(user.completions) == 7
 
     sessions = user.sessions
@@ -222,7 +222,7 @@ def test_learner_achievements_mix_unlocked_and_locked(seeded: Session) -> None:
 
 
 def test_path_shows_completed_active_and_locked_skills(seeded: Session) -> None:
-    """Test-only check of the *data*: unlock rules themselves arrive in M3."""
+    """Test-only check of the *data*: unlock rules themselves are tested in test_path_rules.py."""
     completed_lessons = set(
         seeded.scalars(
             select(LessonCompletion.lesson_id).where(LessonCompletion.user_id == 1)

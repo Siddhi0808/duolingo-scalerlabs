@@ -30,6 +30,9 @@ import { MatchingPairsExercise } from "@/components/lesson/MatchingPairsExercise
 import { FillBlankExercise } from "@/components/lesson/FillBlankExercise";
 import { TypeAnswerExercise } from "@/components/lesson/TypeAnswerExercise";
 import { ErrorState } from "@/components/common/ErrorState";
+import { LightningIcon } from "@/components/common/Icons";
+import { useToast } from "@/components/common/Toast";
+import { refillSuccessToast } from "@/components/hearts/HeartRefillModal";
 
 interface LessonPageProps {
   params: Promise<{ id: string }>;
@@ -40,6 +43,7 @@ export default function LessonPage({ params }: LessonPageProps) {
   const lessonId = parseInt(resolvedParams.id, 10);
   const router = useRouter();
   const queryClient = useQueryClient();
+  const showToast = useToast();
   const [, startTransition] = useTransition();
 
   // Session state
@@ -327,6 +331,7 @@ export default function LessonPage({ params }: LessonPageProps) {
     setRefillError(null);
     try {
       const res = await api.refillHearts();
+      if (res.refilled) showToast(refillSuccessToast(res));
       setHearts(res.hearts);
       setShowOutOfHeartsModal(false);
       setAnswerResult(null);
@@ -351,6 +356,17 @@ export default function LessonPage({ params }: LessonPageProps) {
       <LessonCompleteScreen
         rewards={completedRewards}
         onFinish={() => {
+          // Confirms on the path that the rewards were saved.
+          const { daily_goal, streak, xp_awarded, first_completion } = completedRewards;
+          showToast({
+            title: daily_goal.just_completed
+              ? "Daily goal complete!"
+              : first_completion
+                ? `+${xp_awarded} XP earned`
+                : "Lesson reviewed",
+            description: `${streak.after}-day streak · ${daily_goal.today_xp}/${daily_goal.goal_xp} XP today`,
+            icon: <LightningIcon className="h-5 w-5 fill-gold" />,
+          });
           startTransition(() => {
             router.push("/");
           });
@@ -373,6 +389,11 @@ export default function LessonPage({ params }: LessonPageProps) {
 
   // Error state
   if (errorMessage) {
+    const isExpectedLessonError =
+      errorMessage.code === "LESSON_LOCKED" ||
+      errorMessage.code === "LESSON_NOT_FOUND" ||
+      errorMessage.code === "INVALID_ID";
+
     return (
       <div className="flex min-h-screen flex-col items-center justify-center bg-surface p-4">
         <ErrorState
@@ -383,13 +404,15 @@ export default function LessonPage({ params }: LessonPageProps) {
             setInitTrigger((t) => t + 1);
           }}
         />
-        <button
-          type="button"
-          onClick={() => router.push("/")}
-          className="mt-4 text-sm font-black uppercase tracking-wider text-ink-soft hover:text-ink"
-        >
-          ← Return to Learning Path
-        </button>
+        {!isExpectedLessonError && (
+          <button
+            type="button"
+            onClick={() => router.push("/")}
+            className="mt-4 text-sm font-black uppercase tracking-wider text-ink-soft hover:text-ink"
+          >
+            ← Return to Learning Path
+          </button>
+        )}
       </div>
     );
   }
@@ -405,7 +428,7 @@ export default function LessonPage({ params }: LessonPageProps) {
 
       {/* Main Exercise Area */}
       <main
-        className={`mx-auto flex w-full max-w-2xl flex-1 flex-col justify-center px-4 py-8 ${
+        className={`mx-auto flex w-full max-w-2xl flex-1 flex-col justify-start px-4 pb-8 pt-6 sm:justify-center sm:py-8 ${
           answerResult && !answerResult.correct ? "animate-shake" : ""
         }`}
       >
@@ -445,6 +468,8 @@ export default function LessonPage({ params }: LessonPageProps) {
                 onSelectRight={handleSelectRight}
                 onUnpair={handleUnpair}
                 disabled={Boolean(answerResult) || isSubmitting}
+                isGraded={Boolean(answerResult)}
+                isCorrect={answerResult?.correct}
               />
             )}
 

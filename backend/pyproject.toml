@@ -8,7 +8,6 @@ dependencies = [
     "uvicorn[standard]>=0.30",
     "pydantic>=2.7,<3",
     "pydantic-settings>=2.3,<3",
-    # Declared now so the dependency set is fixed; first used in M1 (models).
     "sqlalchemy>=2.0,<3",
 ]
 

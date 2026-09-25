@@ -52,8 +52,8 @@ export function FeedbackSheet({
             : "border-danger-shadow/40 bg-danger-light"
         }`}
       >
-        <div className="mx-auto flex max-w-4xl flex-col items-center justify-between gap-4 sm:flex-row">
-          <div className="flex items-start gap-4">
+        <div className="mx-auto flex max-w-4xl flex-col items-start sm:items-center justify-between gap-4 sm:flex-row">
+          <div className="flex w-full items-start gap-4 sm:w-auto">
             <div
               className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-full shadow-xs ${
                 isCorrect ? "bg-brand text-white shadow-brand/30" : "bg-danger text-white shadow-danger/30"
@@ -106,7 +106,7 @@ export function FeedbackSheet({
                 : "border-danger-shadow bg-danger hover:brightness-105"
             }`}
           >
-            Continue ↵
+            Continue<span className="hidden sm:inline"> ↵</span>
           </button>
         </div>
       </div>

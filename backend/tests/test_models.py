@@ -1,4 +1,4 @@
-"""M1 model tests: relationships, ordering, constraints and delete rules."""
+"""Model tests: relationships, ordering, constraints and delete rules."""
 
 from datetime import UTC, datetime, timedelta, timezone
 

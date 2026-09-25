@@ -122,7 +122,7 @@ class Exercise(Base):
 
     A single table with a `type` discriminator and two JSON columns, instead of one
     table per type: the types share lifecycle, ordering and grading flow, and differ
-    only in shape, which Pydantic validates per type (M2).
+    only in shape, which Pydantic validates per type (app/schemas/exercises.py).
 
       payload  - what the learner sees (options, tiles, pairs...). Safe to send.
       solution - the correct answer(s). Server-only; never serialized to the client.

@@ -39,30 +39,28 @@ export function WordBankExercise({
         </div>
       </div>
 
-      {/* Sentence assembly / selected area */}
-      <div className="min-h-24 w-full rounded-2xl border-2 border-dashed border-line bg-canvas/60 p-4 flex flex-wrap items-center gap-2.5">
-        {selectedTileIds.length === 0 ? (
-          <span className="text-sm font-black text-locked-ink select-none">
-            Tap words below to build your translation
-          </span>
-        ) : (
-          selectedTileIds.map((tileId) => {
-            const tile = tileMap.get(tileId);
-            if (!tile) return null;
+      {/* Ruled answer area: a 2px line every 56px row, 4px under each row of 46px-tall
+          tiles (10px row gap), so placed words sit on the lines. */}
+      <div
+        aria-label="Your answer"
+        className="flex min-h-28 w-full flex-wrap content-start items-start gap-x-2 gap-y-[10px] bg-[linear-gradient(to_bottom,transparent_50px,var(--color-line)_50px,var(--color-line)_52px)] bg-size-[100%_56px]"
+      >
+        {selectedTileIds.map((tileId) => {
+          const tile = tileMap.get(tileId);
+          if (!tile) return null;
 
-            return (
-              <button
-                key={tile.id}
-                type="button"
-                disabled={disabled}
-                onClick={() => onRemoveTile(tile.id)}
-                className="rounded-xl border-2 border-b-4 border-line bg-surface px-4 py-2 text-base font-black text-ink shadow-xs hover:border-danger hover:text-danger active:translate-y-1 active:border-b-2 transition"
-              >
-                {tile.text}
-              </button>
-            );
-          })
-        )}
+          return (
+            <button
+              key={tile.id}
+              type="button"
+              disabled={disabled}
+              onClick={() => onRemoveTile(tile.id)}
+              className="rounded-xl border-2 border-b-4 border-line bg-surface px-4 py-2 text-base font-black text-ink shadow-xs hover:border-danger hover:text-danger active:translate-y-1 active:border-b-2 transition"
+            >
+              {tile.text}
+            </button>
+          );
+        })}
       </div>
 
       {/* Available tiles pool */}
@@ -74,7 +72,8 @@ export function WordBankExercise({
             return (
               <div
                 key={tile.id}
-                className="rounded-xl border-2 border-dashed border-line bg-canvas px-4 py-2 text-base font-black text-transparent select-none opacity-60"
+                aria-hidden
+                className="rounded-xl border-2 border-b-4 border-transparent bg-line/70 px-4 py-2 text-base font-black text-transparent select-none"
               >
                 {tile.text}
               </div>

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
+  GearIcon,
   LearnIcon,
   TrophyIcon,
   UserIcon,
@@ -12,6 +13,7 @@ const navItems = [
   { label: "Learn", href: "/", icon: LearnIcon },
   { label: "Leaderboard", href: "/leaderboard", icon: TrophyIcon },
   { label: "Profile", href: "/profile", icon: UserIcon },
+  { label: "Settings", href: "/settings", icon: GearIcon },
 ];
 
 export function BottomNav() {
@@ -29,11 +31,14 @@ export function BottomNav() {
           <Link
             key={item.label}
             href={item.href}
-            className={`flex flex-col items-center justify-center rounded-xl p-2 transition ${
-              isActive ? "text-sky" : "text-ink-soft hover:text-ink"
+            aria-current={isActive ? "page" : undefined}
+            className={`flex h-12 w-16 items-center justify-center rounded-2xl border-2 transition ${
+              isActive
+                ? "border-sky-shadow/30 bg-sky-light/50 text-sky"
+                : "border-transparent text-ink-soft hover:bg-canvas"
             }`}
           >
-            <Icon className={`h-6 w-6 ${isActive ? "fill-sky" : "fill-ink-soft"}`} />
+            <Icon className={`h-7 w-7 ${isActive ? "fill-sky" : "fill-ink-soft"}`} />
             <span className="sr-only">{item.label}</span>
           </Link>
         );

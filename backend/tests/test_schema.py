@@ -1,4 +1,4 @@
-"""M1 schema tests: inspect the real SQLite schema created from the models."""
+"""Schema tests: inspect the real SQLite schema created from the models."""
 
 from pathlib import Path
 
@@ -59,7 +59,7 @@ EXPECTED_UNIQUE = {
     ("user_achievements", ("user_id", "achievement_id")),
 }
 
-# Indexes backing the frequent queries named in the M1 brief.
+# Indexes backing the frequent queries the services run.
 EXPECTED_QUERY_INDEXES = {
     ("lessons", ("skill_id", "order_index")),  # lessons by skill, in order
     ("exercises", ("lesson_id", "order_index")),  # exercises by lesson/order

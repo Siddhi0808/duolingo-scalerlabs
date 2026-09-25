@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import { HeartIcon } from "@/components/common/Icons";
 import type { HeartInfo, SessionProgress } from "@/lib/api/types";
 
@@ -14,8 +15,24 @@ export function LessonHeader({ progress, hearts, onQuit }: LessonHeaderProps) {
   const answered = progress?.answered || 0;
   const percent = Math.min(100, Math.floor((answered / total) * 100));
 
+  const currentHearts = hearts?.current ?? 5;
+  const prevHeartsRef = useRef(currentHearts);
+  const [isLosingHeart, setIsLosingHeart] = useState(false);
+
+  useEffect(() => {
+    if (hearts && hearts.current < prevHeartsRef.current) {
+      setIsLosingHeart(true);
+      const timer = setTimeout(() => setIsLosingHeart(false), 400);
+      prevHeartsRef.current = hearts.current;
+      return () => clearTimeout(timer);
+    }
+    prevHeartsRef.current = currentHearts;
+  }, [hearts, currentHearts]);
+
+  const isZeroHearts = hearts !== undefined && hearts.current <= 0;
+
   return (
-    <header className="sticky top-0 z-20 flex h-16 w-full items-center justify-between border-b border-line bg-surface/95 px-4 backdrop-blur-sm sm:px-8">
+    <header className="sticky top-0 z-20 flex h-16 w-full items-center justify-between bg-surface/95 px-4 backdrop-blur-sm sm:px-8">
       {/* Quit / Close Button */}
       <button
         type="button"
@@ -47,8 +64,16 @@ export function LessonHeader({ progress, hearts, onQuit }: LessonHeaderProps) {
       </div>
 
       {/* Hearts Counter */}
-      <div className="flex items-center gap-1.5 text-heart">
-        <HeartIcon className="h-7 w-7 fill-heart" />
+      <div
+        className={`flex items-center gap-1.5 transition-transform ${
+          isZeroHearts ? "text-locked-ink" : "text-heart"
+        } ${isLosingHeart ? "animate-pop scale-110" : ""}`}
+      >
+        <HeartIcon
+          className={`h-7 w-7 transition-colors ${
+            isZeroHearts ? "fill-locked-ink opacity-70" : "fill-heart"
+          }`}
+        />
         <span className="text-lg font-black tracking-tight">
           {hearts ? hearts.current : "—"}
         </span>

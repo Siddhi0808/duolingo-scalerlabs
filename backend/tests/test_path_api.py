@@ -89,7 +89,7 @@ def test_locked_lessons_expose_metadata_only(client: TestClient) -> None:
 
 
 def test_no_endpoint_serves_lesson_exercises(client: TestClient) -> None:
-    # Exercises are only reachable one at a time through a session (M4), never per lesson.
+    # Exercises are only reachable one at a time through a session, never per lesson.
     paths = set(client.get("/api/v1/openapi.json").json()["paths"])
     assert paths == {
         "/api/v1/health",

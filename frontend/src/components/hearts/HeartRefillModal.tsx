@@ -3,9 +3,19 @@
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { GemIcon, HeartIcon } from "@/components/common/Icons";
+import { useToast, type ToastOptions } from "@/components/common/Toast";
 import { api, ApiClientError } from "@/lib/api/client";
 import { queryKeys, useHeartCountdown } from "@/lib/api/hooks";
-import type { HeartInfo } from "@/lib/api/types";
+import type { HeartInfo, HeartRefillResponse } from "@/lib/api/types";
+
+/** Confirmation shown after any successful refill (header modal or out-of-hearts modal). */
+export function refillSuccessToast(res: HeartRefillResponse): ToastOptions {
+  return {
+    title: "Hearts refilled!",
+    description: `${res.hearts.current}/${res.hearts.max} hearts · ${res.gems} gems left`,
+    icon: <HeartIcon className="h-5 w-5 fill-heart" />,
+  };
+}
 
 interface HeartRefillModalProps {
   isOpen: boolean;
@@ -21,6 +31,7 @@ export function HeartRefillModal({
   gems,
 }: HeartRefillModalProps) {
   const queryClient = useQueryClient();
+  const showToast = useToast();
   const { formatted, isRegenerating } = useHeartCountdown(hearts);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -40,9 +51,10 @@ export function HeartRefillModal({
     setErrorMsg(null);
 
     try {
-      await api.refillHearts();
+      const res = await api.refillHearts();
       queryClient.invalidateQueries({ queryKey: queryKeys.me });
       queryClient.invalidateQueries({ queryKey: queryKeys.path });
+      if (res.refilled) showToast(refillSuccessToast(res));
       onClose();
     } catch (err) {
       if (err instanceof ApiClientError) {
@@ -61,26 +73,32 @@ export function HeartRefillModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
-      <div className="relative w-full max-w-sm rounded-3xl border-2 border-line bg-surface p-6 text-center shadow-2xl">
+      <div className="relative w-full max-w-sm rounded-3xl border-2 border-line bg-surface p-6 text-center shadow-2xl animate-pop">
         <button
           type="button"
           onClick={onClose}
-          className="absolute right-4 top-4 text-ink-soft hover:text-ink font-black text-sm p-1"
+          aria-label="Close"
+          className="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-xl text-sm font-black text-ink-soft transition hover:bg-canvas hover:text-ink"
         >
           ✕
         </button>
 
-        {/* Heart Icon */}
-        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-danger-light text-danger">
-          <HeartIcon className="h-12 w-12 fill-danger" />
-        </div>
-
-        <h3 className="mt-4 text-2xl font-black text-ink">
-          {isFull ? "Hearts are full!" : "Refill Hearts"}
+        <h3 className="mt-2 text-2xl font-black text-ink">
+          {isFull ? "Hearts are full!" : "Refill hearts"}
         </h3>
 
-        <div className="mt-2 text-sm font-bold text-ink-soft">
-          {current} / {max} Hearts
+        {/* One icon per heart: filled for hearts you have, grey for missing ones */}
+        <div
+          className="mt-4 flex justify-center gap-1.5"
+          role="img"
+          aria-label={`${current} of ${max} hearts`}
+        >
+          {Array.from({ length: max }, (_, i) => (
+            <HeartIcon
+              key={i}
+              className={`h-9 w-9 ${i < current ? "fill-heart" : "fill-line"}`}
+            />
+          ))}
         </div>
 
         {/* Regeneration Countdown */}
@@ -138,17 +156,9 @@ export function HeartRefillModal({
               onClick={onClose}
               className="w-full rounded-2xl border-b-4 border-brand-shadow bg-brand py-3.5 text-sm font-black uppercase tracking-wider text-white shadow-md transition hover:brightness-105 active:translate-y-1 active:border-b-0"
             >
-              Got It
+              Got it
             </button>
           )}
-
-          <button
-            type="button"
-            onClick={onClose}
-            className="w-full rounded-2xl border-2 border-line bg-surface py-2.5 text-xs font-black uppercase tracking-wider text-ink-soft hover:bg-canvas transition"
-          >
-            Close
-          </button>
         </div>
       </div>
     </div>

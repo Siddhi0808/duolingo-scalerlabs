@@ -1,53 +1,86 @@
 # Lingo: a Duolingo-style language-learning app
 
-A layered monolith with a **FastAPI** backend and a **Next.js** frontend, using **SQLite** for storage.
-Lingo's branding is original. Its design takes inspiration from Duolingo.
+Lingo is a full-stack clone of the Duolingo web app. A learner follows a Spanish learning path, completes lessons made of five interactive exercise types, earns XP, keeps a daily streak, loses and refills hearts, and climbs a leaderboard. All progress is stored per learner in SQLite.
+
+**Hosted demo:** _not deployed yet — add the URL here once it is live (see [Deployment](#deployment))._
+
+## Tech stack
 
 | Part | Stack |
 | --- | --- |
-| `backend/` | Python 3.11+, FastAPI, SQLAlchemy 2 (sync), Pydantic v2, pydantic-settings, SQLite |
-| `frontend/` | Next.js 16 (App Router), TypeScript, Tailwind CSS v4, TanStack Query |
+| `frontend/` | Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS v4, TanStack Query |
+| `backend/` | Python 3.11+, FastAPI, SQLAlchemy 2 (sync), Pydantic v2, pydantic-settings |
+| Database | SQLite (WAL mode, foreign keys enforced) |
+| Tests / tooling | pytest (312 tests), ruff, ESLint, `tsc` |
+
+## Features
+
+- **Learning path:** 3 units, 9 skills and 22 lessons with locked, available, in-progress and completed states, progress rings, a START/CONTINUE marker and a skill popover.
+- **Top bar:** streak, total XP, gems and hearts (with the regeneration countdown).
+- **Lesson player:** multiple choice, word bank (translate by tapping words), matching pairs, fill in the blank and type the answer. Immediate correct/incorrect feedback bar with sounds and animation, a lesson progress bar, hearts, and a quit confirmation.
+- **Hearts:** a wrong answer costs one heart; losing the last one fails the lesson. Hearts regenerate over time, or can be refilled with (mock) gems.
+- **Rewards:** XP on first completion, calendar-day streaks, a daily XP goal, 15 achievements, and a lesson-complete celebration screen.
+- **Leaderboard** of the learner and 9 seeded rivals, a **profile** with stats and achievements, and a **settings** screen (placeholders).
+- **Toasts** for completed lessons and heart refills; modals for out-of-hearts, refill, quitting and achievement details.
+- **Resilience:** refreshing mid-lesson resumes the same exercise; locked or missing lessons and an unreachable backend have friendly screens.
+- **Responsive:** desktop sidebar layout and a mobile layout with a bottom navigation bar.
+
+## Architecture
 
 ```
-routers (thin) → services (rules, one transaction per use case) → SQLAlchemy models → SQLite
+Browser (Next.js, client components)
+   │  fetch JSON  (lib/api/client.ts, TanStack Query hooks)
+   ▼
+FastAPI  /api/v1
+   routers (thin)  →  services (game rules, one transaction per use case)  →  SQLAlchemy models  →  SQLite
 ```
 
-## Status
+- **The server is the source of truth.** The browser never grades answers, chooses the next exercise, or computes XP, streaks or hearts. It renders what the API returns and invalidates cached queries after changes.
+- **Pure rule modules** (`path_rules`, `grading`, `streaks`, and the heart maths in `hearts`) take plain values and return plain values, so they are unit-tested without a database.
+- **Derived, not stored:** skill and unit states, daily XP and the displayed streak are computed on read. The only progress fact is `lesson_completions`.
+- **Consistency:** every answer is one transaction (grade → answer row → hearts → completion → XP → streak → achievements). Unique constraints make repeated submissions and duplicate XP impossible, and an optimistic lock (`users.version`) protects hearts and gems against concurrent writes.
 
-- [x] **M0: scaffold.** Both apps boot, CORS is configured, `GET /api/v1/health` works, and the home page calls it.
-- [x] **M1: database and models.** 12 tables with constraints, indexes and schema tests.
-- [x] **M2: seed data.** One Spanish course (3 units, 9 skills, 22 lessons, 117 exercises), a default learner, and 9 leaderboard bots.
-- [x] **M3: learning path.** Pure unlocking rules, plus `GET /path`.
-- [x] **M4: lesson engine.** Sessions, one exercise at a time, server-side grading for 5 exercise types, hearts, and idempotent completion.
-- [x] **M5: gamification.** XP, calendar-day streaks, daily goal, achievements, leaderboard, and `GET /me`.
-- [x] **M6: hearts and polish.** Lazy heart regeneration, mock gem refill, optimistic locking, and API docs.
-- [x] **M7: frontend architecture.** API client, TanStack Query hooks, layout, responsive design, and mock auth integration.
-- [x] **M8: lesson player.** Full exercise engine supporting all 5 types (multiple choice, word bank, matching pairs, fill-in-blank, type answer), immediate feedback, heart deduction, and session recovery.
-- [x] **M9: gamification & profile.** Total XP, calendar-day streaks, daily goal progress, achievement cards & badges, emerald league leaderboard, and heart refill modal.
-- [x] **M10: visual/UX polish.** Responsive layouts, Duolingo-style 3D buttons, bouncy nodes, sound/feedback states, mobile bottom navigation bar.
-- [x] **M11: QA & testing.** 312 backend tests, frontend typecheck, ESLint, Next.js production build, comprehensive black-box walkthrough with zero console or network errors.
+### Frontend structure
 
-## Current Status & Implemented Features
+```
+frontend/src/
+  app/                  routes: / (path), /lesson/[id], /leaderboard, /profile, /settings
+                        layout.tsx, providers.tsx (TanStack Query + toasts), globals.css (design tokens)
+  components/
+    common/             icons, error state, toast provider
+    hearts/             heart refill modal
+    layout/             app shell, sidebar, top bar, bottom nav
+    lesson/             lesson header, feedback sheet, completion screen, modals, 5 exercise renderers
+    path/               unit banner, skill node with popover, loading skeleton
+    widgets/            daily goal and course stats cards
+  lib/
+    api/                typed API client, response types, TanStack Query hooks
+    audio.ts            Web Audio sound effects (no audio files)
+    config.ts           API base URL
+```
 
-1. **Learning Path / Skill Tree (`/`)**: Visual learning path featuring locked, available, and completed skills across 3 units. Interactive skill popover with progress indicators, lessons list, and unit banners.
-2. **Lesson Player (`/lesson/[id]`)**: Full interactive lesson flow for all 5 backend exercise types:
-   - Multiple Choice (image emoji support, option selection, keyboard shortcuts)
-   - Word Bank / Translation (tap tiles to form sentences, return tiles to pool)
-   - Matching Pairs (pair matching with locked states)
-   - Fill in the Blank (inline sentence fill with option pills)
-   - Type the Answer (accent special characters toolbar, single-submission Enter key support)
-3. **Real-time Feedback & Hearts**: Immediate feedback sheets (correct green / incorrect red with correct answer explanation), authoritative server-side heart deduction (5 to 0), and out-of-hearts modal.
-4. **Session Recovery**: Mid-lesson refreshes automatically restore progress to the active exercise without losing state.
-5. **Gamification & Rewards**:
-   - Lesson completion screen awarding +10 XP, streak extensions, daily goal progress, and unlocked achievement banners.
-   - Leaderboard (`/leaderboard`) ranking learners in Emerald League with current user highlighted.
-   - Profile (`/profile`) showcasing streak, total XP, lesson & skill counts, daily goal, and 15 achievement tiers.
-6. **Heart Refill & Regeneration**: Real-time 30-minute countdown timer, gem refill modal (350 gems), full-hearts protection no-op, and insufficient-gems validation.
-7. **Responsive Design**: Full desktop sidebar layout and mobile-optimized viewport (390px) with bottom navigation bar.
+### Backend structure
 
-## Run locally
+```
+backend/app/
+  main.py               app factory: CORS, error handlers, routers
+  core/                 settings (env), game constants, clock (UTC and local dates), error types
+  db/                   declarative base, UTC datetime type, engine + SQLite pragmas, init_db
+    seed/               seed loader, exercise builder, data/*.json (course, achievements, learners)
+  models/               content, user, progress, gamification, enums
+  schemas/              Pydantic request/response models, exercise payload/solution shapes
+  services/             path_rules, path_service, lesson_service, grading, hearts, xp_service,
+                        streaks, progression_service, achievement_service, profile_service,
+                        leaderboard_service
+  api/deps.py           per-request DB session and the mocked current user
+  api/routers/          health, path, lessons, sessions, me, leaderboard, hearts
+backend/start.sh        production entry point: seed if empty, then uvicorn on $PORT
+backend/tests/          pytest suite, one module per service or API area
+```
 
-Prerequisites: Python 3.11+, Node.js 20.9+.
+## Setup (local)
+
+Prerequisites: Python 3.11+ and Node.js 20.9+.
 
 ```bash
 # Terminal 1: backend on http://localhost:8000
@@ -63,35 +96,143 @@ cp .env.example .env.local
 npm install && npm run dev
 ```
 
-- **Reset the demo:** run `python -m app.db.seed --reset`. `--today YYYY-MM-DD` pins the reference day; the same day always gives an identical database.
-- **After a model change** (there are no migrations), delete `backend/lingo.db*` and seed again.
-- **Quick heart demo:** `HEART_REGEN_MINUTES=1 uvicorn app.main:app --port 8000` regenerates one heart per minute.
-- **Interactive API docs:** http://localhost:8000/api/v1/docs
+Interactive API docs: http://localhost:8000/api/v1/docs
 
-**Demo state after seeding** (learner `learner`, "Alex", Asia/Kolkata):
-- 80 XP, a 6-day streak (last active yesterday), 0/20 daily XP, 5/5 hearts, 600 gems.
-- 7 of 22 lessons done: Greetings and Introductions complete, Basic Words half done, everything else locked.
-- 4 of 15 achievements unlocked. #9 of 10 on the leaderboard.
-- Completing lesson 8 gives +10 XP, streak 7, "7-Day Streak" (and "Sharpshooter" if perfect), and rank #8.
-
-## Quality checks
-
-```bash
-cd backend && source .venv/bin/activate
-ruff check . && ruff format --check . && pytest
-cd ../frontend && npm run typecheck && npm run lint && npm run build
-```
-
-## Configuration
+### Environment variables
 
 | Variable | Where | Default | Purpose |
 | --- | --- | --- | --- |
-| `DATABASE_URL` | `backend/.env` | `sqlite:///<backend>/lingo.db` | SQLAlchemy URL |
-| `CORS_ORIGINS` | `backend/.env` | `http://localhost:3000,http://127.0.0.1:3000` | Browser origins allowed |
-| `HEART_REGEN_MINUTES` | `backend/.env` | `30` | Minutes per regenerated heart |
-| `NEXT_PUBLIC_API_URL` | `frontend/.env.local` | `http://localhost:8000/api/v1` | API base URL (inlined at build) |
+| `DATABASE_URL` | `backend/.env` | `sqlite:///<backend>/lingo.db` | SQLAlchemy URL. Use an absolute path (4 slashes) in production. |
+| `CORS_ORIGINS` | `backend/.env` | `http://localhost:3000,http://127.0.0.1:3000` | Comma-separated browser origins allowed to call the API |
+| `HEART_REGEN_MINUTES` | `backend/.env` | `30` | Minutes per regenerated heart (use a small value for demos) |
+| `NEXT_PUBLIC_API_URL` | `frontend/.env.local` | `http://localhost:8000/api/v1` | API base URL. Inlined at build time, so rebuild after changing it. |
 
----
+`backend/.env.example` and `frontend/.env.example` list the same variables.
+
+### Seed data
+
+`python -m app.db.seed` creates the tables and loads, from `backend/app/db/seed/data/`:
+
+- one Spanish course: 3 units, 9 skills, 22 lessons, 117 exercises covering all five types;
+- 15 achievements;
+- the sample learner **Alex** (`learner`) and 9 leaderboard rivals.
+
+Commands:
+
+- `python -m app.db.seed` does nothing if the course already exists.
+- `python -m app.db.seed --reset` deletes everything and seeds again.
+- `--today YYYY-MM-DD` pins the reference day; the same day always produces an identical database.
+- There are no migrations: after a model change, delete `backend/lingo.db*` and seed again.
+
+**Demo state after seeding** (dates are relative to the seed day, in Asia/Kolkata):
+
+- 80 XP, a 6-day streak (last active yesterday), 0/20 daily XP, 5/5 hearts, 1500 gems (four 350-gem refills).
+- 7 of 22 lessons done: Greetings and Introductions complete, Basic Words half done, everything after it locked.
+- 4 of 15 achievements unlocked, #9 of 10 on the leaderboard.
+- Completing lesson 8 (Basic Words → Animals and things) gives +10 XP, streak 7, the "Wildfire" 7-day achievement and rank #8.
+
+## Running tests
+
+```bash
+cd backend && source .venv/bin/activate
+pytest                                   # 312 tests: rules, services, API, schema, seed
+ruff check . && ruff format --check .
+
+cd ../frontend
+npm run typecheck && npm run lint && npm run build
+```
+
+## Assumptions
+
+- **One learner, one course.** The app always acts as the seeded learner and has one Spanish course (from English), as the assignment allows.
+- **XP:** 10 XP for the first successful completion of a lesson. Replaying a completed lesson is allowed for practice but earns 0 XP and does not extend the streak, so XP can't be farmed.
+- **Streak:** counts consecutive calendar days in the learner's timezone (Asia/Kolkata for the sample learner) with at least one XP-earning lesson. The rules are pure functions over dates, so day changes are tested without waiting (`--today` pins the seed day).
+- **Hearts:** 5 maximum; 1 heart regenerates every 30 minutes (configurable); a refill costs 350 gems. A lesson fails when a wrong answer takes the last heart.
+- **Grading:** typed answers ignore case, punctuation and extra spaces, and accept a missing accent with a note. Matching pairs is graded as a whole exercise, like other exercises.
+- **Daily goal:** 20 XP per day for the sample learner.
+- **Leaderboard:** all-time XP across all seeded users (the "league" styling is cosmetic).
+
+## Mock authentication
+
+There is no login. `api/deps.get_current_user` returns the seeded learner (`DEFAULT_USERNAME`, default `learner`) for every request. Every service takes the user as a parameter, so real authentication would only replace that one dependency. If the database has not been seeded, learner endpoints return `503 LEARNER_NOT_FOUND`.
+
+## Mocked or placeholder features
+
+| Feature | Status |
+| --- | --- |
+| Authentication | Mocked (single sample learner) |
+| Gems | Mocked currency; only spent on heart refills; no purchases |
+| Settings | Placeholder screen showing real profile/course values; controls are marked "Coming soon" |
+| Audio | Synthesised sound effects for correct, incorrect and complete; no speech or pronunciation exercises |
+| Friends / social | Not implemented; the leaderboard uses seeded rivals |
+| Multiple languages | One seeded course (Spanish) |
+| Achievement gem rewards | Listed in the catalog but not paid out |
+| Practice mode | Present in the schema and seed history, not exposed in the UI |
+
+## Deployment
+
+**Status: not deployed yet.**
+
+The app is two services. SQLite needs a disk that survives restarts, so the backend runs as a **single instance with a persistent disk**, and the frontend is a static-first Next.js app.
+
+| Part | Host | Why |
+| --- | --- | --- |
+| Backend (FastAPI + SQLite) | **Render web service (paid instance) with a persistent disk** | Disk contents survive restarts and redeploys; free instances have no persistent disk |
+| Frontend (Next.js) | **Vercel** (Hobby) | Native Next.js hosting; only needs one environment variable |
+
+Any host with a persistent volume works the same way (e.g. Railway with a volume): run `backend/start.sh` with `DATABASE_URL` pointing at the volume.
+
+### Backend (Render)
+
+1. **New → Web Service**, connect the GitHub repository.
+2. Settings:
+   - Root Directory: `backend`
+   - Runtime: Python
+   - Build Command: `pip install .`
+   - Start Command: `sh start.sh`
+   - Instance type: any paid type (required for a disk)
+   - Health Check Path: `/api/v1/health`
+3. **Disk:** add a disk with mount path `/var/data` (1 GB is plenty).
+4. **Environment variables:**
+
+   | Name | Value |
+   | --- | --- |
+   | `PYTHON_VERSION` | `3.13.5` (the tested version; Render's default is newer) |
+   | `DATABASE_URL` | `sqlite:////var/data/lingo.db` (four slashes: absolute path on the disk) |
+   | `CORS_ORIGINS` | your Vercel URL, e.g. `https://lingo.vercel.app` |
+   | `HEART_REGEN_MINUTES` | optional; e.g. `5` so evaluators regain hearts quickly |
+
+5. Deploy, then open `https://<backend>.onrender.com/api/v1/health` (should return `"status":"ok"`) and `/api/v1/path`.
+
+`start.sh` runs `python -m app.db.seed` and then `uvicorn` on `$PORT`. The seed creates the tables and demo data on the first start (the disk is only mounted at runtime, so it can't happen during the build) and does nothing on later starts, so learner progress is kept across restarts and redeploys. Keep the service at **one instance**: SQLite has a single writer, and Render doesn't allow scaling a service that has a disk.
+
+`DATABASE_URL` must be set: without it the database file is created next to the installed package, outside the disk, and is lost on every deploy.
+
+### Frontend (Vercel)
+
+1. **Add New → Project**, import the repository.
+2. Root Directory: `frontend` (framework preset: Next.js; the default build command `npm run build` is correct).
+3. Environment variable: `NEXT_PUBLIC_API_URL=https://<backend>.onrender.com/api/v1`, set **before** deploying. It is inlined at build time, so redeploy after changing it. A Vercel build without it fails on purpose instead of producing a site that calls `localhost`.
+4. Deploy, then copy the production URL into the backend's `CORS_ORIGINS` (a trailing slash is ignored) and let the backend redeploy.
+
+Only the production URL is allowed by CORS. Vercel preview URLs will show "Can't connect" unless you add them to `CORS_ORIGINS` (comma-separated).
+
+### Before an evaluation
+
+Reset the demo so the sample learner's streak is current ("last active yesterday"). In the Render service's **Shell** tab:
+
+```bash
+python -m app.db.seed --reset
+```
+
+### Post-deployment smoke test
+
+1. `GET /api/v1/health` returns `ok`; the site loads the path with streak 6, XP 80, gems 1500 and 5 hearts.
+2. Complete lesson 8 (Basic Words → Animals and things): +10 XP, streak 7, "Wildfire" achievement, a toast on the path.
+3. Answer wrong until hearts run out; refill from the modal (gems −350).
+4. Refresh in the middle of a lesson: it resumes at the same exercise.
+5. Check profile, leaderboard (#8) and settings.
+6. **Persistence:** in Render, choose **Manual Deploy → Deploy latest commit** (or restart). After it comes back, XP, streak and gems must be unchanged.
 
 ## API reference
 
@@ -189,7 +330,7 @@ cd ../frontend && npm run typecheck && npm run lint && npm run build
 **Achievements (`achievement_service.py`).**
 - Rules are rows: *metric ≥ threshold*. Metrics: `total_xp`, `streak`, `lessons_completed`, `perfect_lessons`, `skills_completed`.
 - Checked after XP and streak in the completion transaction. The (user, achievement) primary key makes a duplicate unlock impossible.
-- Required ones: First Lesson = `scholar_1`, 100 XP = `sage_1`, 3-Day Streak = `wildfire_1`, 7-Day Streak = `wildfire_2`.
+- Examples: First Lesson = `scholar_1`, 100 XP = `sage_1`, 3-Day Streak = `wildfire_1`, 7-Day Streak = `wildfire_2`.
 - Gem rewards are listed but not paid out.
 
 **Leaderboard.** `ORDER BY xp_total DESC, id ASC`, served by an index. Ranks are positions.
@@ -213,27 +354,17 @@ cd ../frontend && npm run typecheck && npm run lint && npm run build
 - Every foreign key column is indexed.
 - Timestamps are stored in UTC and returned timezone-aware.
 
-## Repository layout
 
-```
-backend/app/
-  main.py                    app factory: CORS, error handlers, routers
-  core/                      config (env), constants, clock (utc_now, local_date), errors
-  db/                        base, UTCDateTime type, engine + pragmas, init_db, seed/ (JSON data + loader)
-  models/                    content, user, progress, gamification, enums
-  schemas/                   exercises (payload/solution), path, lesson, gamification
-  services/                  path_rules, path_service, grading, lesson_service, hearts,
-                             xp_service, streaks, achievement_service, progression_service,
-                             profile_service, leaderboard_service
-  api/deps.py, api/routers/  health, path, lessons, sessions, me, leaderboard, hearts
-backend/tests/               one test module per service/API area (pytest)
-frontend/src/
-  app/                       layout, providers, globals.css, pages (path, lesson, leaderboard, profile)
-  components/
-    common/                  icons, error and loading states
-    hearts/                  hearts display, out-of-hearts and refill modals
-    layout/                  app shell, sidebar, top nav, bottom nav
-    lesson/                  header, feedback sheet, completion screen, 5 exercise renderers
-    path/                    learning path, unit sections, interactive skill nodes
-  lib/                       API client, TypeScript schema types, TanStack Query hooks, config
-```
+## Known limitations
+
+- **SQLite** allows one writer at a time. That is fine for one learner, but it is not built for many concurrent users.
+- **No migrations:** the schema is created from the models; changing a model means reseeding.
+- **Seed dates are relative to the seed day.** A database seeded several days ago shows the sample learner's streak as 0 (correctly, because days were missed). Reseed before a demo.
+- **Matching pairs** is graded as one exercise, so if any pair is wrong, every pair is shown in red.
+- **Replays earn 0 XP** by design (see Assumptions).
+- **Settings are read-only** placeholders, and the learner's timezone is fixed per user in the seed.
+- **No frontend automated tests;** the frontend is checked with TypeScript, ESLint, a production build and manual browser testing.
+
+## AI usage
+
+As the assignment allows, AI coding assistants were used heavily during development: for scaffolding, writing and refactoring code, writing tests, and reviewing the UI and code. Every change was reviewed, run and tested by the author, and the design decisions documented above (schema, transaction boundaries, derived state, idempotency, heart regeneration) are the author's to explain.

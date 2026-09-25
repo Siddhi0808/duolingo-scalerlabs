@@ -47,7 +47,7 @@ def db(engine: Engine) -> Iterator[Session]:
 
 @pytest.fixture
 def seeded(db: Session) -> Session:
-    """The M2 seed dataset (course, learner, bots) in the test database."""
+    """The seed dataset (course, learner, bots) in the test database."""
     result = seed_database(db, SEED_DAY)
     db.commit()
     assert not result.skipped

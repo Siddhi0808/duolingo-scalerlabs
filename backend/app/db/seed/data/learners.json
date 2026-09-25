@@ -1,5 +1,5 @@
 {
-  "_comment": "Days are offsets from the seed's reference day (0 = today in each user's timezone; -1 = yesterday). Times are local wall-clock times. Stored counters (streak, hearts, gems) are seeded as plain state; xp_total is always the sum of the user's XP events. Learner XP follows the M5 rule: 10 XP per first lesson completion (and 10 for the practice session).",
+  "_comment": "Days are offsets from the seed's reference day (0 = today in each user's timezone; -1 = yesterday). Times are local wall-clock times. Stored counters (streak, hearts, gems) are seeded as plain state; xp_total is always the sum of the user's XP events. Learner XP follows the lesson XP rule: 10 XP per first lesson completion (and 10 for the practice session).",
   "learner": {
     "username": "learner",
     "display_name": "Alex",
@@ -9,7 +9,7 @@
     "daily_goal_xp": 20,
     "hearts": 5,
     "hearts_updated": {"day": -1, "time": "21:14"},
-    "gems": 600,
+    "gems": 1500,
     "streak_count": 6,
     "longest_streak": 6,
     "last_streak_day": -1,
