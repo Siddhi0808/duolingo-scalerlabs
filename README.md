@@ -2,7 +2,13 @@
 
 Lingo is a full-stack clone of the Duolingo web app. A learner follows a Spanish learning path, completes lessons made of five interactive exercise types, earns XP, keeps a daily streak, loses and refills hearts, and climbs a leaderboard. All progress is stored per learner in SQLite.
 
-**Hosted demo:** _not deployed yet — add the URL here once it is live (see [Deployment](#deployment))._
+## 🚀 Live Demo
+
+[Try Lingo →](https://duolingo-scalerlabs.vercel.app)
+
+**Hosted demo:**
+- Frontend: https://duolingo-scalerlabs.vercel.app
+- Backend API: https://duolingo-scalerlabs.onrender.com
 
 ## Tech stack
 
@@ -171,7 +177,9 @@ There is no login. `api/deps.get_current_user` returns the seeded learner (`DEFA
 
 ## Deployment
 
-**Status: not deployed yet.**
+**Status: deployed.**
+- Frontend: https://duolingo-scalerlabs.vercel.app
+- Backend API: https://duolingo-scalerlabs.onrender.com
 
 The app is two services. SQLite needs a disk that survives restarts, so the backend runs as a **single instance with a persistent disk**, and the frontend is a static-first Next.js app.
 
