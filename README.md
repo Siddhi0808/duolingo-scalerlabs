@@ -175,7 +175,6 @@ There is no login. `api/deps.get_current_user` returns the seeded learner (`DEFA
 
 ## Deployment
 
-**Status: not deployed yet.**
 
 - Frontend: https://duolingo-scalerlabs.vercel.app
 - Backend API: https://duolingo-scalerlabs.onrender.com
