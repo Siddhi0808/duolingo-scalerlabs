@@ -6,14 +6,8 @@ Lingo is a full-stack clone of the Duolingo web app. A learner follows a Spanish
 
 [Try Lingo →](https://duolingo-scalerlabs.vercel.app/)
 
-<<<<<<< HEAD
-Frontend: https://duolingo-scalerlabs.vercel.app
-
-Backend API: https://duolingo-scalerlabs.onrender.com
-=======
 - **Frontend:** https://duolingo-scalerlabs.vercel.app
 - **Backend API:** https://duolingo-scalerlabs.onrender.com (see [Deployment](#deployment))
->>>>>>> 8f01885 (readme updation)
 
 ## Tech stack
 
@@ -182,10 +176,7 @@ There is no login. `api/deps.get_current_user` returns the seeded learner (`DEFA
 
 ## Deployment
 
-<<<<<<< HEAD
-=======
 **Status: deployed.**
->>>>>>> 8f01885 (readme updation)
 
 - Frontend: https://duolingo-scalerlabs.vercel.app
 - Backend API: https://duolingo-scalerlabs.onrender.com
